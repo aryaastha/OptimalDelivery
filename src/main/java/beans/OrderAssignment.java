@@ -19,4 +19,23 @@ public class OrderAssignment {
     public DeliveryExec getDeliveryExec() {
         return deliveryExec;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderAssignment)) return false;
+
+        OrderAssignment that = (OrderAssignment) o;
+
+        if (getOrder() != null ? !getOrder().equals(that.getOrder()) : that.getOrder() != null) return false;
+        return getDeliveryExec() != null ? getDeliveryExec().equals(that.getDeliveryExec()) : that.getDeliveryExec() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getOrder() != null ? getOrder().hashCode() : 0;
+        result = 31 * result + (getDeliveryExec() != null ? getDeliveryExec().hashCode() : 0);
+        return result;
+    }
 }

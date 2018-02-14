@@ -18,6 +18,10 @@ public class Assignment {
         this.cost = cost;
     }
 
+    public OrderAssignment getPair(){
+        return new OrderAssignment(order, deliveryExec);
+    }
+
     public void setCost(Double cost) {
         this.cost = cost;
     }

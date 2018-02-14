@@ -3,17 +3,17 @@ package model;
 import beans.Location;
 import beans.Restaurant;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by astha.a on 12/02/18.
  */
 public class Restaurants {
-    private static HashMap<Location, Restaurant> map;
+    private static ConcurrentHashMap<Location, Restaurant> map;
     private static Restaurants instance;
 
     public Restaurants() {
-        map = new HashMap<Location, Restaurant>();
+        map = new ConcurrentHashMap<Location, Restaurant>();
     }
 
     public static Restaurants getInstance() {
@@ -28,13 +28,7 @@ public class Restaurants {
     }
 
     public void addNewRestaurant(Location restaurantLocation) {
-        if (map.get(restaurantLocation) == null) {
-            synchronized (Restaurants.class) {
-                if (map.get(restaurantLocation) == null) {
-                    map.put(restaurantLocation, new Restaurant(restaurantLocation));
-                }
-            }
-        }
+        map.putIfAbsent(restaurantLocation, new Restaurant(restaurantLocation));
     }
 
     public Restaurant getExistingRestaurant(Location restaurantLocation) {

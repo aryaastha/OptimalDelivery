@@ -1,10 +1,10 @@
 package attributes;
 
-import utils.LocationUtils;
 import beans.Assignment;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
+import utils.LocationUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +13,15 @@ import java.util.HashMap;
  * Created by astha.a on 13/02/18.
  */
 public class MinimumDistance implements IAttribute<OrderAssignment> {
+    private Double weight;
 
+    public MinimumDistance(Double weight) {
+        this.weight = weight;
+    }
 
     public ArrayList<Assignment> getAttributeWiseScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
-
+        ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
         for (Order order1 : order){
             for(DeliveryExec d : de){
                 everyPossibleCombination.add(new OrderAssignment(order1, d));
@@ -25,7 +29,12 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         }
 
         HashMap<OrderAssignment, Double> assignmentScore = normalizeOrderTimes(everyPossibleCombination);
-        return null;
+
+        for (OrderAssignment assign : everyPossibleCombination){
+            allCombinations.add(new Assignment(assign.getDeliveryExec(),assign.getOrder(),assignmentScore.get(assign)));
+        }
+
+        return allCombinations;
     }
 
     public HashMap<OrderAssignment, Double> normalizeOrderTimes(ArrayList<OrderAssignment> assignments) {

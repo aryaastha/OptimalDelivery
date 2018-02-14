@@ -8,6 +8,12 @@ public class DeliveryExec {
     private Location currentLocation;
     private Double lastOrderDeliveryTime;
 
+    public DeliveryExec(int id, Location currentLocation, Double lastOrderDeliveryTime) {
+        this.id = id;
+        this.currentLocation = currentLocation;
+        this.lastOrderDeliveryTime = lastOrderDeliveryTime;
+    }
+
 
     public int getId() {
         return id;

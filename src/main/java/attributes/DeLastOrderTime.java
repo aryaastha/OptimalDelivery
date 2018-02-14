@@ -11,6 +11,11 @@ import java.util.HashMap;
  * Created by astha.a on 13/02/18.
  */
 public class DeLastOrderTime implements IAttribute<DeliveryExec> {
+    private Double weight;
+    public DeLastOrderTime(Double weight) {
+        this.weight = weight;
+    }
+
     public ArrayList<Assignment> getAttributeWiseScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
 
@@ -19,7 +24,7 @@ public class DeLastOrderTime implements IAttribute<DeliveryExec> {
         for (DeliveryExec d: de){
             Double value = deScore.get(d);
             for (Order o : order){
-                allCombinations.add(new Assignment(d, o, value));
+                allCombinations.add(new Assignment(d, o, weight * value));
             }
         }
 
