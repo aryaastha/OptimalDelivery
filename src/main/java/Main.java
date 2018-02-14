@@ -16,6 +16,7 @@ import java.util.Map;
  * Created by astha.a on 14/02/18.
  */
 public class Main {
+
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String mappingParameters = "{\n" +
                 "  \"implementation\":\"MyMapping\",\n" +

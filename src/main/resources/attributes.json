@@ -1,11 +1,16 @@
 {
-  "implementation":"MyMapping",
-  "properties": {
-    "attributes": {
-      "DeLastOrderTime": 1,
-      "OrderTime": 1,
-      "MinimumDistance": 1
-    },
+  "implementation": {
+    "attributes": [
+      "DeLastOrderTime":{
+        "weight":1
+      },
+      "OrderTime": {
+        "weight":1
+      },
+      "MinimumDistance": {
+        "weight":1
+      }
+    ],
     "strategy": "GreedyStrategy"
   }
 }

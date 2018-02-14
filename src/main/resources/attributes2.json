@@ -1,0 +1,11 @@
+{
+    "implementation":"MyMapping",
+    "properties": {
+      "attributes": {
+        "DeLastOrderTime": 1,
+        "OrderTime": 1,
+        "MinimumDistance": 1
+      },
+      "strategy": "GreedyStrategy"
+    }
+}
