@@ -16,10 +16,10 @@ public class OrderTime implements IAttribute<Order> {
     public OrderTime(Double weight) {
         this.weight = weight;
     }
-    public ArrayList<Assignment> getAttributeWiseScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
+    public ArrayList<Assignment> getScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
         ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
 
-        HashMap<Order, Double> orderScore = normalizeOrderTimes(orders);
+        HashMap<Order, Double> orderScore = getNormalisedScore(orders);
 
         for (Order order: orders){
             Double value = orderScore.get(order);
@@ -31,7 +31,7 @@ public class OrderTime implements IAttribute<Order> {
         return allCombinations;
     }
 
-    public HashMap<Order,Double> normalizeOrderTimes(ArrayList<Order> orders){
+    public HashMap<Order,Double> getNormalisedScore(ArrayList<Order> orders){
         Double maxIntime = 0D;
         Double minIntime = Double.MAX_VALUE;
 

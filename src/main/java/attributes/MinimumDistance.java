@@ -19,7 +19,7 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         this.weight = weight;
     }
 
-    public ArrayList<Assignment> getAttributeWiseScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
+    public ArrayList<Assignment> getScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
         ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
         for (Order order1 : order){
@@ -28,7 +28,7 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
             }
         }
 
-        HashMap<OrderAssignment, Double> assignmentScore = normalizeOrderTimes(everyPossibleCombination);
+        HashMap<OrderAssignment, Double> assignmentScore = getNormalisedScore(everyPossibleCombination);
 
         for (OrderAssignment assign : everyPossibleCombination){
             allCombinations.add(new Assignment(assign.getDeliveryExec(),assign.getOrder(),assignmentScore.get(assign)));
@@ -37,7 +37,7 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         return allCombinations;
     }
 
-    public HashMap<OrderAssignment, Double> normalizeOrderTimes(ArrayList<OrderAssignment> assignments) {
+    public HashMap<OrderAssignment, Double> getNormalisedScore(ArrayList<OrderAssignment> assignments) {
 
         Double maxDistance = 0D;
         Double minDistance = Double.MAX_VALUE;

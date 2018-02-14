@@ -16,10 +16,10 @@ public class DeLastOrderTime implements IAttribute<DeliveryExec> {
         this.weight = weight;
     }
 
-    public ArrayList<Assignment> getAttributeWiseScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
+    public ArrayList<Assignment> getScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
 
-        HashMap<DeliveryExec, Double> deScore = normalizeOrderTimes(de);
+        HashMap<DeliveryExec, Double> deScore = getNormalisedScore(de);
 
         for (DeliveryExec d: de){
             Double value = deScore.get(d);
@@ -31,7 +31,7 @@ public class DeLastOrderTime implements IAttribute<DeliveryExec> {
         return allCombinations;
     }
 
-    public HashMap<DeliveryExec, Double> normalizeOrderTimes(ArrayList<DeliveryExec> deliveryExecs) {
+    public HashMap<DeliveryExec, Double> getNormalisedScore(ArrayList<DeliveryExec> deliveryExecs) {
         Double maxLastOrderTime = 0D;
         Double minLastOrderTime = Double.MAX_VALUE;
 
