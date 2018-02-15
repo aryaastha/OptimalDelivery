@@ -44,7 +44,7 @@ public class DpStrategy implements IStrategy {
 
         Double[] dp = new Double[numberOfPerms.intValue()];
 
-        ArrayList<Pair<OrderAssignment,Long>> temporary = new ArrayList<>(numberOfPerms.intValue());
+        HashMap<Integer,Pair<OrderAssignment,Long>> temporary = new HashMap<>(numberOfPerms.intValue());
         for (Long i = 0L; i < numberOfPerms.intValue(); i++) {
             dp[i.intValue()] = Double.MAX_VALUE;
         }
@@ -63,12 +63,11 @@ public class DpStrategy implements IStrategy {
             for(Long j = 0L; j < N; j++) {
                 if(!checkIfSet(mask, j)){
                     Long index = mask | (1 << j);
-                    dp[index.intValue()] = Math.min(dp[index.intValue()], dp[mask.intValue()]+cost[x.intValue()][j.intValue()]);
-
                     if (dp[index.intValue()] > (dp[mask.intValue()]+cost[x.intValue()][j.intValue()])) {
                         System.out.println("temporary in this");
-                        temporary.set(index.intValue(), new Pair<>(new OrderAssignment(listOfOrders.get(x.intValue()), listOfExecs.get(j.intValue())), mask));
+                        temporary.put(index.intValue(), new Pair<>(new OrderAssignment(listOfOrders.get(x.intValue()), listOfExecs.get(j.intValue())), mask));
                     }
+                    dp[index.intValue()] = Math.min(dp[index.intValue()], dp[mask.intValue()]+cost[x.intValue()][j.intValue()]);
                 }
             }
         }
