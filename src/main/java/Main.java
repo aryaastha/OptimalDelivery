@@ -26,7 +26,7 @@ public class Main {
 
 
         int t = 0;
-        for(Double i = 0D; i<3D; i++){
+        for(Double i = 0D; i<2D; i++){
 //            orders.add(new Order(++t,new Restaurant(new Location(i,i)),i));
         }
 
@@ -36,7 +36,7 @@ public class Main {
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        for (Double i = 0D ; i < 3D ; i++ ){
+        for (Double i = 0D ; i<2D ; i++ ){
 //            executives.add(new DeliveryExec(++t,new Location(i,i),i));
         }
 

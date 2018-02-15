@@ -52,7 +52,7 @@ public class DpStrategy implements IStrategy {
         Double[][] cost =new Double[listOfOrders.size()][listOfExecs.size()];
         for (int i = 0; i < listOfOrders.size(); i++){
             for (int j = 0; j < listOfExecs.size(); j++){
-                cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(0),listOfExecs.get(j)));
+                cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i),listOfExecs.get(j)));
             }
         }
 
@@ -72,15 +72,15 @@ public class DpStrategy implements IStrategy {
             }
         }
 
+        System.out.println("Temporary size : " + temporary.size());
+
         int mask = numberOfPerms.intValue() - 1;
-        Pair<OrderAssignment, Long> orderAssignmentLongPair = temporary.get(mask);
-        while(mask>=0){
+        Pair<OrderAssignment, Long> orderAssignmentLongPair;
+        while(mask>0){
+            orderAssignmentLongPair = temporary.get(mask);
             finalAssignment.add(orderAssignmentLongPair.getKey());
-            mask = temporary.get(orderAssignmentLongPair.getValue().intValue()).getValue().intValue();
+            mask = orderAssignmentLongPair.getValue().intValue();
         }
-
-
-        System.out.println("Size of final Assignment : " + finalAssignmentTemp.size());
 
         System.out.println("Minimum Cost : " + dp[numberOfPerms.intValue()-1]);
 
