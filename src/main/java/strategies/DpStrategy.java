@@ -19,10 +19,13 @@ public class DpStrategy implements IStrategy {
     public ArrayList<OrderAssignment> getFinalAssignment(UpdateScores updatedScores) {
         HashMap<OrderAssignment, Double> allCombinationScoreList = updatedScores.getUpdatedScores();
 
+        HashMap<Order, DeliveryExec> finalAssignmentTemp = new HashMap<>();
+        ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
+
         ArrayList<Order> listOfOrders = new ArrayList<>();
         ArrayList<DeliveryExec> listOfExecs = new ArrayList<>();
 
-        for( Map.Entry<OrderAssignment, Double> entries : allCombinationScoreList.entrySet()){
+        for (Map.Entry<OrderAssignment, Double> entries : allCombinationScoreList.entrySet()) {
             Order order = entries.getKey().getOrder();
             DeliveryExec deliveryExec = entries.getKey().getDeliveryExec();
 
@@ -33,33 +36,70 @@ public class DpStrategy implements IStrategy {
                 listOfOrders.add(order);
 
         }
-//
-//        System.out.println("length of unique order list : " + listOfOrders.size());
-//        System.out.println("length of unique executives list : " + listOfExecs.size());
-//        System.out.println("length of allCombinationsScoreList : " + allCombinationScoreList.size());
-//
-//        Integer N = listOfExecs.size();
-//
-//        Double numberOfPerms = (Math.pow(2D, N));
-//
-//        ArrayList<Double> dp = new ArrayList<>(numberOfPerms.intValue());
-//        for(Long i = 0L; i< numberOfPerms.intValue(); i++) {
-//            dp.set(i.intValue(), Double.MAX_VALUE);
-//        }
-//
-//        dp.set(0, 0D);
-//
-////        for(long mask = 0; mask < numberOfPerms.intValue(); mask++){
-////            long x = countSetBits(mask);
-////            for j = 0 to N
-////                if jth bit is not set in i
-////                    dp[mask|(1<<j)] = min(dp[mask|(1<<j)], dp[mask]+cost[x][j])
-////
-////        return dp[power(2,N)-1]
-//
-//        System.out.println(allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(9),listOfExecs.get(9))));
-//
-        return null;
+
+        Integer N = listOfExecs.size();
+
+        Double numberOfPerms = (Math.pow(2D, N));
+
+        Double[] dp = new Double[numberOfPerms.intValue()];
+        for (Long i = 0L; i < numberOfPerms.intValue(); i++) {
+            dp[i.intValue()] = Double.MAX_VALUE;
+        }
+
+        Double[][] cost =new Double[listOfOrders.size()][listOfExecs.size()];
+        for (int i = 0; i < listOfOrders.size(); i++){
+            for (int j = 0; j < listOfExecs.size(); j++){
+                cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(0),listOfExecs.get(j)));
+            }
+        }
+
+        dp[0] = 0D;
+
+        for (Long mask = 0L; mask < numberOfPerms.intValue(); mask++) {
+            Long x = countSetBits(mask, N);
+            for(Long j = 0L; j < N; j++) {
+                if(!checkIfSet(mask, j)){
+                    Long index = mask | (1 << j);
+                    dp[index.intValue()] = Math.min(dp[index.intValue()], dp[mask.intValue()]+cost[x.intValue()][j.intValue()]);
+                    finalAssignmentTemp.put(listOfOrders.get(x.intValue()),listOfExecs.get(j.intValue()));
+                }
+            }
+
+        }
+
+        for(Map.Entry<Order, DeliveryExec> entry : finalAssignmentTemp.entrySet()){
+            finalAssignment.add(new OrderAssignment(entry.getKey(),entry.getValue()));
+        }
+
+
+        System.out.println("Size of final Assignment : " + finalAssignmentTemp.size());
+
+        System.out.println("Minimum Cost : " + dp[numberOfPerms.intValue()-1]);
+
+        for(int i = 0 ; i < listOfOrders.size(); i++){
+            for (int j = 0; j < listOfExecs.size(); j++){
+                System.out.print(cost[i][j] + " ");
+            }
+            System.out.println();
+        }
+        return finalAssignment;
     }
+
+    private Long countSetBits(Long mask, int N){
+        long count = 0;
+        for(Long j = 0L; j < N; j++){
+            if(checkIfSet(mask, j)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private boolean checkIfSet(long mask, Long bit){
+        if((mask&(1<<bit))!=0)
+            return true;
+        return false;
+    }
+
 
 }

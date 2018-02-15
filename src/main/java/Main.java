@@ -15,18 +15,6 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
-//        String mappingParameters = "{\n" +
-//                "  \"implementation\":\"MyMapping\",\n" +
-//                "  \"properties\": {\n" +
-//                "    \"attributes\": {\n" +
-//                "      \"DeLastOrderTime\": 1,\n" +
-//                "      \"OrderTime\": 3,\n" +
-//                "      \"MinimumDistance\": 2\n" +
-//                "    },\n" +
-//                "    \"strategy\": \"GreedyStrategy\"\n" +
-//                "  }\n" +
-//                "}";
-
         String mappingParameters = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/main/resources/attributes.json");
         JsonObject jsonObject = new Gson().fromJson(mappingParameters, JsonObject.class);
         Class implementation = Class.forName("mappings." + jsonObject.get("implementation").getAsString());

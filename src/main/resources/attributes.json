@@ -22,7 +22,7 @@
       }
     ],
     "strategy": {
-      "name": "GreedyStrategy",
+      "name": "DpStrategy",
       "properties": {}
     }
   }
