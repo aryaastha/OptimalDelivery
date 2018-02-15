@@ -13,5 +13,6 @@ import java.util.ArrayList;
  */
 public interface IAttribute {
     ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> order, ArrayList<DeliveryExec> de);
+
     Double getWeight();
 }

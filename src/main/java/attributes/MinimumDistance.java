@@ -20,39 +20,38 @@ public class MinimumDistance implements IAttribute {
     }
 
 
-
     public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
         ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
-        for (Order order1 : order){
-            for(DeliveryExec d : de){
+        for (Order order1 : order) {
+            for (DeliveryExec d : de) {
                 everyPossibleCombination.add(new OrderAssignment(order1, d));
             }
         }
 
         HashMap<OrderAssignment, Double> assignmentScore = getNormalisedScore(everyPossibleCombination);
 
-        for (OrderAssignment assign : everyPossibleCombination){
-            allCombinations.add(new Pair<>(new OrderAssignment(assign.getOrder(),assign.getDeliveryExec()),assignmentScore.get(assign)));
+        for (OrderAssignment assign : everyPossibleCombination) {
+            allCombinations.add(new Pair<>(new OrderAssignment(assign.getOrder(), assign.getDeliveryExec()), assignmentScore.get(assign)));
         }
 
         return allCombinations;
     }
 
-    public HashMap<OrderAssignment, Double> getNormalisedScore(ArrayList<OrderAssignment> assignments) {
+    private HashMap<OrderAssignment, Double> getNormalisedScore(ArrayList<OrderAssignment> assignments) {
 
         Double maxDistance = 0D;
         Double minDistance = Double.MAX_VALUE;
 
 
         HashMap<OrderAssignment, Double> valuePerCombo = new HashMap<OrderAssignment, Double>();
-        for (OrderAssignment assignment : assignments){
+        for (OrderAssignment assignment : assignments) {
             Double distance = LocationUtils.distance(assignment.getDeliveryExec().getCurrentLocation(), assignment.getOrder().getRestaurant().getRestaurantLocation());
-            if (distance>maxDistance){
+            if (distance > maxDistance) {
                 maxDistance = distance;
             }
-            
-            if (distance<minDistance){
+
+            if (distance < minDistance) {
                 minDistance = distance;
             }
 
@@ -60,9 +59,9 @@ public class MinimumDistance implements IAttribute {
         }
 
 
-        for (OrderAssignment assignment : assignments){
+        for (OrderAssignment assignment : assignments) {
             Double comboDistance = valuePerCombo.get(assignment);
-            valuePerCombo.put(assignment, comboDistance /(maxDistance-minDistance));
+            valuePerCombo.put(assignment, comboDistance / (maxDistance - minDistance));
         }
 
         return valuePerCombo;

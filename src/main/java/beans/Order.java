@@ -8,7 +8,7 @@ public class Order {
     Restaurant restaurant;
     Double orderedTime;
 
-    public Order(Integer orderId, Restaurant res, Double orderedTime){
+    public Order(Integer orderId, Restaurant res, Double orderedTime) {
         this.orderId = orderId;
         this.restaurant = res;
         this.orderedTime = orderedTime;

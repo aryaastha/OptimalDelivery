@@ -33,7 +33,7 @@ public class DeLastOrderTime implements IAttribute {
         return allCombinations;
     }
 
-    public HashMap<DeliveryExec, Double> getNormalisedScore(ArrayList<DeliveryExec> deliveryExecs) {
+    private HashMap<DeliveryExec, Double> getNormalisedScore(ArrayList<DeliveryExec> deliveryExecs) {
         Double maxLastOrderTime = 0D;
         Double minLastOrderTime = Double.MAX_VALUE;
 

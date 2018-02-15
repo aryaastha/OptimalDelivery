@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import javafx.util.Pair;
 import strategies.IStrategy;
-import utils.UpdateScores;
+import utils.ScoreComputer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -17,30 +17,30 @@ import java.util.ArrayList;
 /**
  * Created by astha.a on 13/02/18.
  */
-public class MyMapping implements Mapping{
+public class MyMapping implements Mapping {
     private ArrayList<IAttribute> attributes;
     private IStrategy strategy;
 
     public MyMapping(String prop) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         this.attributes = new ArrayList<IAttribute>();
         JsonObject properties = new Gson().fromJson(prop, JsonObject.class);
-        for(JsonElement entry : properties.get("attributes").getAsJsonArray()){
+        for (JsonElement entry : properties.get("attributes").getAsJsonArray()) {
             Class attributeName = Class.forName("attributes." + entry.getAsJsonObject().get("name").getAsString());
-            attributes.add((IAttribute)new Gson().fromJson(entry.getAsJsonObject().get("properties"),attributeName));
+            attributes.add((IAttribute) new Gson().fromJson(entry.getAsJsonObject().get("properties"), attributeName));
         }
 
 
         Class strategyName = Class.forName("strategies." + properties.get("strategy").getAsJsonObject().get("name").getAsString());
-        this.strategy = (IStrategy)new Gson().fromJson(properties.get("strategy").getAsJsonObject().get("properties"), strategyName);
+        this.strategy = (IStrategy) new Gson().fromJson(properties.get("strategy").getAsJsonObject().get("properties"), strategyName);
     }
 
     public ArrayList<OrderAssignment> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
-        UpdateScores updateScores = new UpdateScores();
-        for (IAttribute attribute : attributes){
+        ScoreComputer scoreComputer = new ScoreComputer();
+        for (IAttribute attribute : attributes) {
             ArrayList<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, deliveryExec);
-            updateScores.updateScores(attributeScore, attribute.getWeight());
+            scoreComputer.updateScores(attributeScore, attribute.getWeight());
         }
 
-        return strategy.getFinalAssignment(updateScores);
+        return strategy.getFinalAssignment(scoreComputer);
     }
 }

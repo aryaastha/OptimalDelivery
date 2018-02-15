@@ -45,7 +45,7 @@ public class StrategyTest {
 
     @Test
     public void testDp() throws Exception {
-        String mappingForDp = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/test/resources/attributes.json");
+        String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes.json");
 
         Order order1 = new Gson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
@@ -121,7 +121,7 @@ public class StrategyTest {
 
     @Test
     public void testGreedy() throws Exception {
-        String mappingForGreedy = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/test/resources/attributes2.json");;
+        String mappingForGreedy = FileUtils.readFromFile("src/test/resources/attributes2.json");;
 
         Order order1 = new Gson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +

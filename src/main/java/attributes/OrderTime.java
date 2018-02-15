@@ -17,14 +17,15 @@ public class OrderTime implements IAttribute {
     public OrderTime(Double weight) {
         this.weight = weight;
     }
+
     public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
         ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
 
         HashMap<Order, Double> orderScore = getNormalisedScore(orders);
 
-        for (Order order: orders){
+        for (Order order : orders) {
             Double value = orderScore.get(order);
-            for (DeliveryExec deliveryExec : de){
+            for (DeliveryExec deliveryExec : de) {
                 allCombinations.add(new Pair<>(new OrderAssignment(order, deliveryExec), value));
             }
         }
@@ -32,23 +33,23 @@ public class OrderTime implements IAttribute {
         return allCombinations;
     }
 
-    public HashMap<Order,Double> getNormalisedScore(ArrayList<Order> orders){
+    private HashMap<Order, Double> getNormalisedScore(ArrayList<Order> orders) {
         Double maxIntime = 0D;
         Double minIntime = Double.MAX_VALUE;
 
-        for (Order order : orders){
-            if (order.getOrderedTime()<minIntime){
+        for (Order order : orders) {
+            if (order.getOrderedTime() < minIntime) {
                 minIntime = order.getOrderedTime();
             }
 
-            if (order.getOrderedTime()>maxIntime){
+            if (order.getOrderedTime() > maxIntime) {
                 maxIntime = order.getOrderedTime();
             }
         }
 
         HashMap<Order, Double> valuePerOrder = new HashMap<Order, Double>();
-        for (Order order: orders){
-            valuePerOrder.put(order, order.getOrderedTime()/(maxIntime-minIntime));
+        for (Order order : orders) {
+            valuePerOrder.put(order, order.getOrderedTime() / (maxIntime - minIntime));
         }
 
         return valuePerOrder;
