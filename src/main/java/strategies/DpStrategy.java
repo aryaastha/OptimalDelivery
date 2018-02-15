@@ -91,9 +91,7 @@ public class DpStrategy implements IStrategy {
     }
 
     private boolean checkIfSet(Integer mask, Integer bit) {
-        if ((mask & (1 << bit)) != 0)
-            return true;
-        return false;
+        return (mask & (1 << bit)) != 0;
     }
 
 
