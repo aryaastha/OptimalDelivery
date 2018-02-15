@@ -33,13 +33,13 @@ public class Main {
 
         ArrayList<Order> orders = new ArrayList<Order>();
         int t = 0;
-        for(Double i = 0D; i<10D; i++){
+        for(Double i = 0D; i<2D; i++){
             orders.add(new Order(++t,new Restaurant(new Location(Math.random(),Math.random())),Math.random()));
         }
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        for (Double i = 10D ; i > 0 ; i-- ){
+        for (Double i = 0D ; i < 2D ; i++ ){
             executives.add(new DeliveryExec(++t,new Location(Math.random(),Math.random()),Math.random()));
         }
 

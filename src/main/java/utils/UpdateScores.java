@@ -20,8 +20,8 @@ public class UpdateScores {
     public void updateScores(ArrayList<Pair<OrderAssignment, Double>> attributeScore, Double weight){
         for (Pair<OrderAssignment, Double> assign : attributeScore) {
             if (this.updatedScores.containsKey(assign.getKey())){
-                this.updatedScores.put(assign.getKey(),assign.getValue()+this.updatedScores.get(assign.getKey()));
-            }else this.updatedScores.put(assign.getKey(),assign.getValue());
+                this.updatedScores.put(assign.getKey(),weight*assign.getValue()+this.updatedScores.get(assign.getKey()));
+            }else this.updatedScores.put(assign.getKey(),weight*assign.getValue());
         }
     }
 
