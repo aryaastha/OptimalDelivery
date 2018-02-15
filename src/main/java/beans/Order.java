@@ -31,6 +31,27 @@ public class Order {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+
+        Order order = (Order) o;
+
+        if (!getOrderId().equals(order.getOrderId())) return false;
+        if (!getRestaurant().equals(order.getRestaurant())) return false;
+        return getOrderedTime().equals(order.getOrderedTime());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getOrderId().hashCode();
+        result = 31 * result + getRestaurant().hashCode();
+        result = 31 * result + getOrderedTime().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Order{" +
                 "orderId=" + orderId +

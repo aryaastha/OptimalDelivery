@@ -38,4 +38,11 @@ public class OrderAssignment {
         result = 31 * result + (getDeliveryExec() != null ? getDeliveryExec().hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "The order : {" + order +
+                "}\n \t was assigned to \n \t \t deliveryExec :{" + deliveryExec +
+                "}\n";
+    }
 }

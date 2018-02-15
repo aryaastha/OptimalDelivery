@@ -2,7 +2,9 @@ import beans.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import mappings.Mapping;
+import utils.FileUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -12,26 +14,29 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        String mappingParameters = "{\n" +
-                "  \"implementation\":\"MyMapping\",\n" +
-                "  \"properties\": {\n" +
-                "    \"attributes\": {\n" +
-                "      \"DeLastOrderTime\": 1,\n" +
-                "      \"OrderTime\": 3,\n" +
-                "      \"MinimumDistance\": 2\n" +
-                "    },\n" +
-                "    \"strategy\": \"GreedyStrategy\"\n" +
-                "  }\n" +
-                "}";
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
+//        String mappingParameters = "{\n" +
+//                "  \"implementation\":\"MyMapping\",\n" +
+//                "  \"properties\": {\n" +
+//                "    \"attributes\": {\n" +
+//                "      \"DeLastOrderTime\": 1,\n" +
+//                "      \"OrderTime\": 3,\n" +
+//                "      \"MinimumDistance\": 2\n" +
+//                "    },\n" +
+//                "    \"strategy\": \"GreedyStrategy\"\n" +
+//                "  }\n" +
+//                "}";
 
+        String mappingParameters = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/main/resources/attributes.json");
         JsonObject jsonObject = new Gson().fromJson(mappingParameters, JsonObject.class);
         Class implementation = Class.forName("mappings." + jsonObject.get("implementation").getAsString());
-        Constructor declaredConstructor = implementation.getDeclaredConstructor(JsonObject.class);
-        Mapping mappingImplementation = (Mapping)declaredConstructor.newInstance(jsonObject.get("properties").getAsJsonObject());
+        Constructor declaredConstructor = implementation.getDeclaredConstructor(String.class);
+        Mapping myImplementation = (Mapping) declaredConstructor.newInstance(jsonObject.get("properties").toString());
 
 
         ArrayList<Order> orders = new ArrayList<Order>();
+
+
         int t = 0;
         for(Double i = 0D; i<2D; i++){
             orders.add(new Order(++t,new Restaurant(new Location(Math.random(),Math.random())),Math.random()));
@@ -43,9 +48,11 @@ public class Main {
             executives.add(new DeliveryExec(++t,new Location(Math.random(),Math.random()),Math.random()));
         }
 
-        ArrayList<OrderAssignment> mapping = mappingImplementation.getMapping(orders,executives);
+
+        ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders,executives);
+        System.out.println("Order Assignment : \n");
         for (OrderAssignment assign : mapping){
-            System.out.println(assign.getOrder() + " : " + assign.getDeliveryExec());
+            System.out.println(assign);
         }
     }
 }

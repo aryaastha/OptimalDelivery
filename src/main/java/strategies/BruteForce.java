@@ -1,7 +1,7 @@
 package strategies;
 
 import beans.OrderAssignment;
-import javafx.util.Pair;
+import utils.UpdateScores;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class BruteForce implements IStrategy{
     public BruteForce() {}
 
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ArrayList<Pair<OrderAssignment, Double>> allCombinationScoreList) {
+    public ArrayList<OrderAssignment> getFinalAssignment(UpdateScores updatedScores) {
         return null;
     }
 }

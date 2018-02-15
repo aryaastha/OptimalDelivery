@@ -25,11 +25,15 @@ public class UpdateScores {
         }
     }
 
-    public ArrayList<Pair<OrderAssignment, Double>> getUpdatedScores(){
+    public ArrayList<Pair<OrderAssignment, Double>> getUpdatedScoresAsList(){
         ArrayList<Pair<OrderAssignment, Double>> allCombinationScores = new ArrayList<>();
         for(Map.Entry<OrderAssignment, Double> entries : updatedScores.entrySet()){
             allCombinationScores.add(new Pair<>(entries.getKey(),entries.getValue()));
         }
         return allCombinationScores;
+    }
+
+    public HashMap<OrderAssignment, Double> getUpdatedScores() {
+        return updatedScores;
     }
 }

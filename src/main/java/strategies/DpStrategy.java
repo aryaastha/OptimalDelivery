@@ -1,9 +1,13 @@
 package strategies;
 
+import beans.DeliveryExec;
+import beans.Order;
 import beans.OrderAssignment;
-import javafx.util.Pair;
+import utils.UpdateScores;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by astha.a on 14/02/18.
@@ -12,22 +16,23 @@ public class DpStrategy implements IStrategy {
     public DpStrategy() {}
 
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ArrayList<Pair<OrderAssignment, Double>> allCombinationScoreList) {
+    public ArrayList<OrderAssignment> getFinalAssignment(UpdateScores updatedScores) {
+        HashMap<OrderAssignment, Double> allCombinationScoreList = updatedScores.getUpdatedScores();
 
-//        ArrayList<Order> listOfOrders = new ArrayList<>();
-//        ArrayList<DeliveryExec> listOfExecs = new ArrayList<>();
-//
-//        for( Map.Entry<OrderAssignment, Double> entries : allCombinationScoreList.entrySet()){
-//            Order order = entries.getKey().getOrder();
-//            DeliveryExec deliveryExec = entries.getKey().getDeliveryExec();
-//
-//            if (!listOfExecs.contains(deliveryExec))
-//                listOfExecs.add(deliveryExec);
-//
-//            if (!listOfOrders.contains(order))
-//                listOfOrders.add(order);
-//
-//        }
+        ArrayList<Order> listOfOrders = new ArrayList<>();
+        ArrayList<DeliveryExec> listOfExecs = new ArrayList<>();
+
+        for( Map.Entry<OrderAssignment, Double> entries : allCombinationScoreList.entrySet()){
+            Order order = entries.getKey().getOrder();
+            DeliveryExec deliveryExec = entries.getKey().getDeliveryExec();
+
+            if (!listOfExecs.contains(deliveryExec))
+                listOfExecs.add(deliveryExec);
+
+            if (!listOfOrders.contains(order))
+                listOfOrders.add(order);
+
+        }
 //
 //        System.out.println("length of unique order list : " + listOfOrders.size());
 //        System.out.println("length of unique executives list : " + listOfExecs.size());

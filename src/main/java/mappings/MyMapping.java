@@ -4,16 +4,15 @@ import attributes.IAttribute;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import javafx.util.Pair;
 import strategies.IStrategy;
 import utils.UpdateScores;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by astha.a on 13/02/18.
@@ -22,19 +21,17 @@ public class MyMapping implements Mapping{
     private ArrayList<IAttribute> attributes;
     private IStrategy strategy;
 
-    public MyMapping(JsonObject properties) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public MyMapping(String prop) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         this.attributes = new ArrayList<IAttribute>();
-        for(Map.Entry<String, JsonElement> entry : properties.get("attributes").getAsJsonObject().entrySet()){
-            Class attributeName = Class.forName("attributes." + entry.getKey());
-            Constructor declaredConstructor = attributeName.getDeclaredConstructor(Double.class);
-            attributes.add((IAttribute)declaredConstructor.newInstance(entry.getValue().getAsDouble()));
+        JsonObject properties = new Gson().fromJson(prop, JsonObject.class);
+        for(JsonElement entry : properties.get("attributes").getAsJsonArray()){
+            Class attributeName = Class.forName("attributes." + entry.getAsJsonObject().get("name").getAsString());
+            attributes.add((IAttribute)new Gson().fromJson(entry.getAsJsonObject().get("properties"),attributeName));
         }
 
-        Class strategyName = Class.forName("strategies." + properties.get("strategy").getAsString());
-        Constructor declaredConstructor = strategyName.getDeclaredConstructor();
-        this.strategy = (IStrategy) declaredConstructor.newInstance();
 
-
+        Class strategyName = Class.forName("strategies." + properties.get("strategy").getAsJsonObject().get("name").getAsString());
+        this.strategy = (IStrategy)new Gson().fromJson(properties.get("strategy").getAsJsonObject().get("properties"), strategyName);
     }
 
     public ArrayList<OrderAssignment> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
@@ -44,6 +41,6 @@ public class MyMapping implements Mapping{
             updateScores.updateScores(attributeScore, attribute.getWeight());
         }
 
-        return strategy.getFinalAssignment(updateScores.getUpdatedScores());
+        return strategy.getFinalAssignment(updateScores);
     }
 }
