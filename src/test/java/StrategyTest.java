@@ -1,11 +1,10 @@
 import beans.*;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import mappings.Mapping;
 import org.junit.Test;
 import utils.FileUtils;
+import utils.GsonFactory;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +16,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class StrategyTest {
     public ArrayList<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        JsonObject jsonObject = new Gson().fromJson(mappingParameters, JsonObject.class);
-        Class implementation = Class.forName("mappings." + jsonObject.get("implementation").getAsString());
-        Constructor declaredConstructor = implementation.getDeclaredConstructor(String.class);
-        Mapping myImplementation = (Mapping) declaredConstructor.newInstance(jsonObject.get("properties").toString());
-
-
+        JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(mappingParameters, JsonObject.class);
+        Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
         ArrayList<Order> orders = new ArrayList<Order>();
 
 
@@ -47,7 +42,7 @@ public class StrategyTest {
     public void testDp() throws Exception {
         String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes.json");
 
-        Order order1 = new Gson().fromJson(" {\n" +
+        Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -58,7 +53,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 7.0\n" +
                 " }", Order.class);
 
-        Order order2 = new Gson().fromJson(" {\n" +
+        Order order2 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 1,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -69,7 +64,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 9.0\n" +
                 " }", Order.class);
 
-        Order order3 = new Gson().fromJson(" {\n" +
+        Order order3 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 3,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -80,7 +75,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 9.0\n" +
                 " }",Order.class);
 
-        DeliveryExec exec1 = new Gson().fromJson("{\n" +
+        DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 6,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 9.0,\n" +
@@ -89,7 +84,7 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 3.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec2 = new Gson().fromJson("{\n" +
+        DeliveryExec exec2 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 5,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 6.0,\n" +
@@ -98,7 +93,7 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 5.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec3 = new Gson().fromJson("{\n" +
+        DeliveryExec exec3 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 4,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 4.0,\n" +
@@ -123,7 +118,7 @@ public class StrategyTest {
     public void testGreedy() throws Exception {
         String mappingForGreedy = FileUtils.readFromFile("src/test/resources/attributes2.json");;
 
-        Order order1 = new Gson().fromJson(" {\n" +
+        Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -134,7 +129,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 7.0\n" +
                 " }", Order.class);
 
-        Order order2 = new Gson().fromJson(" {\n" +
+        Order order2 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 1,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -145,7 +140,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 9.0\n" +
                 " }", Order.class);
 
-        Order order3 = new Gson().fromJson(" {\n" +
+        Order order3 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 3,\n" +
                 " \t\"restaurant\": {\n" +
                 " \t\t\"restaurantLocation\": {\n" +
@@ -156,7 +151,7 @@ public class StrategyTest {
                 " \t\"orderedTime\": 9.0\n" +
                 " }",Order.class);
 
-        DeliveryExec exec1 = new Gson().fromJson("{\n" +
+        DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 6,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 9.0,\n" +
@@ -165,7 +160,7 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 3.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec2 = new Gson().fromJson("{\n" +
+        DeliveryExec exec2 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 5,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 6.0,\n" +
@@ -174,7 +169,7 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 5.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec3 = new Gson().fromJson("{\n" +
+        DeliveryExec exec3 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 4,\n" +
                 "\t\"currentLocation\": {\n" +
                 "\t\t\"latitude\": 4.0,\n" +
