@@ -3,6 +3,7 @@ package strategies;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
+import javafx.util.Pair;
 import utils.UpdateScores;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class DpStrategy implements IStrategy {
         Double numberOfPerms = (Math.pow(2D, N));
 
         Double[] dp = new Double[numberOfPerms.intValue()];
+
+        ArrayList<Pair<OrderAssignment,Long>> temporary = new ArrayList<>(numberOfPerms.intValue());
         for (Long i = 0L; i < numberOfPerms.intValue(); i++) {
             dp[i.intValue()] = Double.MAX_VALUE;
         }
@@ -61,14 +64,20 @@ public class DpStrategy implements IStrategy {
                 if(!checkIfSet(mask, j)){
                     Long index = mask | (1 << j);
                     dp[index.intValue()] = Math.min(dp[index.intValue()], dp[mask.intValue()]+cost[x.intValue()][j.intValue()]);
-                    finalAssignmentTemp.put(listOfOrders.get(x.intValue()),listOfExecs.get(j.intValue()));
+
+                    if (dp[index.intValue()] > (dp[mask.intValue()]+cost[x.intValue()][j.intValue()])) {
+                        System.out.println("temporary in this");
+                        temporary.set(index.intValue(), new Pair<>(new OrderAssignment(listOfOrders.get(x.intValue()), listOfExecs.get(j.intValue())), mask));
+                    }
                 }
             }
-
         }
 
-        for(Map.Entry<Order, DeliveryExec> entry : finalAssignmentTemp.entrySet()){
-            finalAssignment.add(new OrderAssignment(entry.getKey(),entry.getValue()));
+        int mask = numberOfPerms.intValue() - 1;
+        Pair<OrderAssignment, Long> orderAssignmentLongPair = temporary.get(mask);
+        while(mask>=0){
+            finalAssignment.add(orderAssignmentLongPair.getKey());
+            mask = temporary.get(orderAssignmentLongPair.getValue().intValue()).getValue().intValue();
         }
 
 

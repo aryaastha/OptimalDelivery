@@ -11,13 +11,13 @@
       {
         "name" : "OrderTime",
         "properties": {
-          "weight": 1
+          "weight": 3
         }
       },
       {
         "name":"MinimumDistance",
         "properties": {
-          "weight": 1
+          "weight": 2
         }
       }
     ],
