@@ -24,4 +24,20 @@ public class Restaurant {
                 "restaurantLocation=" + restaurantLocation +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Restaurant)) return false;
+
+        Restaurant that = (Restaurant) o;
+
+        return getRestaurantLocation() != null ? getRestaurantLocation().equals(that.getRestaurantLocation()) : that.getRestaurantLocation() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getRestaurantLocation() != null ? getRestaurantLocation().hashCode() : 0;
+    }
 }

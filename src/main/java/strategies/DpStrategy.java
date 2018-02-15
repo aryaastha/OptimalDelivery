@@ -64,7 +64,7 @@ public class DpStrategy implements IStrategy {
                 if(!checkIfSet(mask, j)){
                     Long index = mask | (1 << j);
                     if (dp[index.intValue()] > (dp[mask.intValue()]+cost[x.intValue()][j.intValue()])) {
-                        System.out.println("temporary in this");
+//                        System.out.println("temporary in this");
                         temporary.put(index.intValue(), new Pair<>(new OrderAssignment(listOfOrders.get(x.intValue()), listOfExecs.get(j.intValue())), mask));
                     }
                     dp[index.intValue()] = Math.min(dp[index.intValue()], dp[mask.intValue()]+cost[x.intValue()][j.intValue()]);
@@ -72,7 +72,7 @@ public class DpStrategy implements IStrategy {
             }
         }
 
-        System.out.println("Temporary size : " + temporary.size());
+//        System.out.println("Temporary size : " + temporary.size());
 
         int mask = numberOfPerms.intValue() - 1;
         Pair<OrderAssignment, Long> orderAssignmentLongPair;
@@ -82,7 +82,7 @@ public class DpStrategy implements IStrategy {
             mask = orderAssignmentLongPair.getValue().intValue();
         }
 
-        System.out.println("Minimum Cost : " + dp[numberOfPerms.intValue()-1]);
+//        System.out.println("Minimum Cost : " + dp[numberOfPerms.intValue()-1]);
 
         for(int i = 0 ; i < listOfOrders.size(); i++){
             for (int j = 0; j < listOfExecs.size(); j++){

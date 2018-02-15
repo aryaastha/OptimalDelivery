@@ -37,4 +37,23 @@ public class Location {
                 ", longitude=" + longitude +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Location)) return false;
+
+        Location location = (Location) o;
+
+        if (!getLatitude().equals(location.getLatitude())) return false;
+        return getLongitude().equals(location.getLongitude());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getLatitude().hashCode();
+        result = 31 * result + getLongitude().hashCode();
+        return result;
+    }
 }

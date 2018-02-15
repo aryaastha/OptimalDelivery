@@ -8,6 +8,7 @@ import utils.FileUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,9 +56,8 @@ public class StrategyTest {
     }
 
     @Test
-    public void testStrategies() throws Exception {
+    public void testDp() throws Exception {
         String mappingForDp = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/test/resources/attributes.json");
-        String mappingForGreedy = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/test/resources/attributes2.json");;
 
         Order order1 = new Gson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
@@ -119,21 +119,17 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
-        ArrayList<OrderAssignment> orderAssignmentsForGreedy = runTest(mappingForGreedy);
         ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
-        ArrayList<OrderAssignment> expectedAnswerForGreedy = new ArrayList<>();
-        ArrayList<OrderAssignment> expectedAnswerForDp = new ArrayList<>();
+        HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
-        expectedAnswerForGreedy.add(new OrderAssignment(order1,exec3));
-        expectedAnswerForGreedy.add(new OrderAssignment(order2,exec2));
-        expectedAnswerForGreedy.add(new OrderAssignment(order3,exec1));
+        expectedAnswerForDp.put(order1,exec1);
+        expectedAnswerForDp.put(order3,exec3);
+        expectedAnswerForDp.put(order2,exec2);
 
-        expectedAnswerForDp.add(new OrderAssignment(order1,exec1));
-        expectedAnswerForDp.add(new OrderAssignment(order3,exec3));
-        expectedAnswerForDp.add(new OrderAssignment(order2,exec2));
-
-        assertEquals(orderAssignmentsForGreedy,expectedAnswerForGreedy);
-        assertEquals(orderAssignmentsForDp,expectedAnswerForDp);
+        for (OrderAssignment assign : orderAssignmentsForDp){
+//            System.out.println(expectedAnswerForDp.get(assign.getOrder()));
+            assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
+        }
     }
 
     @Test
@@ -201,12 +197,16 @@ public class StrategyTest {
                 "}", DeliveryExec.class);
 
         ArrayList<OrderAssignment> orderAssignmentsForGreedy = runTest(mappingForGreedy);
-        ArrayList<OrderAssignment> expectedAnswerForGreedy = new ArrayList<>();
 
-        expectedAnswerForGreedy.add(new OrderAssignment(order1,exec3));
-        expectedAnswerForGreedy.add(new OrderAssignment(order2,exec2));
-        expectedAnswerForGreedy.add(new OrderAssignment(order3,exec1));
+        HashMap<Order, DeliveryExec> expectedAnswerForGreedy = new HashMap<>();
 
-        assertEquals(orderAssignmentsForGreedy,expectedAnswerForGreedy);
+        expectedAnswerForGreedy.put(order1,exec3);
+        expectedAnswerForGreedy.put(order2,exec2);
+        expectedAnswerForGreedy.put(order3,exec1);
+
+        for (OrderAssignment assign : orderAssignmentsForGreedy){
+//            System.out.println(expectedAnswerForGreedy.get(assign.getOrder()));
+            assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
+        }
     }
 }
