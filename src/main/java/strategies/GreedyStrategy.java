@@ -1,8 +1,7 @@
 package strategies;
 
-import beans.DeliveryExec;
-import beans.Order;
 import beans.OrderAssignment;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -13,21 +12,22 @@ public class GreedyStrategy implements IStrategy {
     public GreedyStrategy() {}
 
     @Override
-    public HashMap<Order, DeliveryExec> getFinalAssignment(LinkedHashMap<OrderAssignment, Double> allCombinationScoreList) {
-        HashMap<Order, DeliveryExec> finalAssignment = new HashMap<>();
-        List<Map.Entry<OrderAssignment, Double>> list = new LinkedList<Map.Entry<OrderAssignment, Double>>(allCombinationScoreList.entrySet());
-        Collections.sort( list, new Comparator<Map.Entry<OrderAssignment, Double>>() {
-            public int compare(Map.Entry<OrderAssignment, Double> o1, Map.Entry<OrderAssignment, Double> o2) {
-                return (o1.getValue()).compareTo( o2.getValue() );
+    public ArrayList<OrderAssignment> getFinalAssignment(ArrayList<Pair<OrderAssignment, Double>> allCombinationScoreList) {
+        ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
+
+        Collections.sort(allCombinationScoreList, new Comparator<Pair<OrderAssignment, Double>>() {
+            @Override
+            public int compare(Pair<OrderAssignment, Double> o1, Pair<OrderAssignment, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
             }
         });
 
         Set<Integer> assignedOrders = new HashSet<>();
         Set<Integer> assignedDe = new HashSet<>();
 
-        for (Map.Entry<OrderAssignment, Double> element : list){
+        for (Pair<OrderAssignment, Double> element : allCombinationScoreList){
             if (!assignedOrders.contains(element.getKey().getOrder().getOrderId()) && !assignedDe.contains(element.getKey().getDeliveryExec().getId())) {
-                finalAssignment.put(element.getKey().getOrder(), element.getKey().getDeliveryExec());
+                finalAssignment.add(element.getKey());
                 assignedDe.add(element.getKey().getDeliveryExec().getId());
                 assignedOrders.add(element.getKey().getOrder().getOrderId());
             }

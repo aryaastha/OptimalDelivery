@@ -29,4 +29,13 @@ public class Order {
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", restaurant=" + restaurant +
+                ", orderedTime=" + orderedTime +
+                '}';
+    }
 }

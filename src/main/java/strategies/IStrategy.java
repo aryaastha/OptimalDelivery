@@ -1,15 +1,13 @@
 package strategies;
 
-import beans.DeliveryExec;
-import beans.Order;
 import beans.OrderAssignment;
+import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 /**
  * Created by astha.a on 14/02/18.
  */
 public interface IStrategy {
-    public HashMap<Order, DeliveryExec> getFinalAssignment(LinkedHashMap<OrderAssignment, Double> allCombinationScoreList);
+    public ArrayList<OrderAssignment> getFinalAssignment(ArrayList<Pair<OrderAssignment, Double>> allCombinationScoreList);
 }

@@ -38,4 +38,13 @@ public class DeliveryExec {
     public void setLastOrderDeliveryTime(Double lastOrderDeliveryTime) {
         this.lastOrderDeliveryTime = lastOrderDeliveryTime;
     }
+
+    @Override
+    public String toString() {
+        return "DeliveryExec{" +
+                "id=" + id +
+                ", currentLocation=" + currentLocation +
+                ", lastOrderDeliveryTime=" + lastOrderDeliveryTime +
+                '}';
+    }
 }

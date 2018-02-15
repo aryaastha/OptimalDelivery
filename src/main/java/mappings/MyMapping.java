@@ -1,19 +1,18 @@
 package mappings;
 
 import attributes.IAttribute;
-import beans.Assignment;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import javafx.util.Pair;
 import strategies.IStrategy;
+import utils.UpdateScores;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -38,18 +37,13 @@ public class MyMapping implements Mapping{
 
     }
 
-    public HashMap<Order, DeliveryExec> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
-        LinkedHashMap<OrderAssignment, Double> allCombinationScoreList = new LinkedHashMap<>();
+    public ArrayList<OrderAssignment> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
+        UpdateScores updateScores = new UpdateScores();
         for (IAttribute attribute : attributes){
-            ArrayList<Assignment> score = attribute.getScore(orders, deliveryExec);
-
-            for (Assignment assign : score) {
-                if (allCombinationScoreList.containsKey(assign.getPair())){
-                    allCombinationScoreList.put(assign.getPair(),assign.getCost()+allCombinationScoreList.get(assign.getPair()));
-                }else allCombinationScoreList.put(assign.getPair(),assign.getCost());
-            }
+            ArrayList<Pair<OrderAssignment, Double>> attributeScore = attribute.getScore(orders, deliveryExec);
+            updateScores.updateScores(attributeScore, attribute.getWeight());
         }
 
-        return strategy.getFinalAssignment(allCombinationScoreList);
+        return strategy.getFinalAssignment(updateScores.getUpdatedScores());
     }
 }

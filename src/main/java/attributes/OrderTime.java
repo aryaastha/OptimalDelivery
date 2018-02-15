@@ -1,8 +1,9 @@
 package attributes;
 
-import beans.Assignment;
 import beans.DeliveryExec;
 import beans.Order;
+import beans.OrderAssignment;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,15 +17,15 @@ public class OrderTime implements IAttribute<Order> {
     public OrderTime(Double weight) {
         this.weight = weight;
     }
-    public ArrayList<Assignment> getScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
-        ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
+    public ArrayList<Pair<OrderAssignment, Double>> getScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
+        ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
 
         HashMap<Order, Double> orderScore = getNormalisedScore(orders);
 
         for (Order order: orders){
             Double value = orderScore.get(order);
             for (DeliveryExec deliveryExec : de){
-                allCombinations.add(new Assignment(deliveryExec, order, weight*value));
+                allCombinations.add(new Pair<>(new OrderAssignment(order, deliveryExec), value));
             }
         }
 
@@ -51,5 +52,9 @@ public class OrderTime implements IAttribute<Order> {
         }
 
         return valuePerOrder;
+    }
+
+    public Double getWeight() {
+        return weight;
     }
 }

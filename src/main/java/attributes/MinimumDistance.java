@@ -1,9 +1,9 @@
 package attributes;
 
-import beans.Assignment;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
+import javafx.util.Pair;
 import utils.LocationUtils;
 
 import java.util.ArrayList;
@@ -19,9 +19,11 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         this.weight = weight;
     }
 
-    public ArrayList<Assignment> getScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
+
+
+    public ArrayList<Pair<OrderAssignment, Double>> getScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
-        ArrayList<Assignment> allCombinations = new ArrayList<Assignment>();
+        ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
         for (Order order1 : order){
             for(DeliveryExec d : de){
                 everyPossibleCombination.add(new OrderAssignment(order1, d));
@@ -31,7 +33,7 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         HashMap<OrderAssignment, Double> assignmentScore = getNormalisedScore(everyPossibleCombination);
 
         for (OrderAssignment assign : everyPossibleCombination){
-            allCombinations.add(new Assignment(assign.getDeliveryExec(),assign.getOrder(),assignmentScore.get(assign)));
+            allCombinations.add(new Pair<>(new OrderAssignment(assign.getOrder(),assign.getDeliveryExec()),assignmentScore.get(assign)));
         }
 
         return allCombinations;
@@ -64,5 +66,9 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
         }
 
         return valuePerCombo;
+    }
+
+    public Double getWeight() {
+        return weight;
     }
 }
