@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * Created by astha.a on 13/02/18.
  */
-public class MinimumDistance implements IAttribute<OrderAssignment> {
+public class MinimumDistance implements IAttribute {
     private Double weight;
 
     public MinimumDistance(Double weight) {
@@ -21,7 +21,7 @@ public class MinimumDistance implements IAttribute<OrderAssignment> {
 
 
 
-    public ArrayList<Pair<OrderAssignment, Double>> getScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
+    public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
         ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
         ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
         for (Order order1 : order){

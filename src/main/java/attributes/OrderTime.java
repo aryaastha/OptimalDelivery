@@ -11,13 +11,13 @@ import java.util.HashMap;
 /**
  * Created by astha.a on 13/02/18.
  */
-public class OrderTime implements IAttribute<Order> {
+public class OrderTime implements IAttribute {
     private Double weight;
 
     public OrderTime(Double weight) {
         this.weight = weight;
     }
-    public ArrayList<Pair<OrderAssignment, Double>> getScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
+    public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> orders, ArrayList<DeliveryExec> de) {
         ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
 
         HashMap<Order, Double> orderScore = getNormalisedScore(orders);

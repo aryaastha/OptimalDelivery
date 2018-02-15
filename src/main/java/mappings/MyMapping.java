@@ -37,7 +37,7 @@ public class MyMapping implements Mapping{
     public ArrayList<OrderAssignment> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
         UpdateScores updateScores = new UpdateScores();
         for (IAttribute attribute : attributes){
-            ArrayList<Pair<OrderAssignment, Double>> attributeScore = attribute.getScore(orders, deliveryExec);
+            ArrayList<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, deliveryExec);
             updateScores.updateScores(attributeScore, attribute.getWeight());
         }
 

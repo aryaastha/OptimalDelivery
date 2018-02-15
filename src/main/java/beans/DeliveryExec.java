@@ -4,26 +4,7 @@ package beans;
  * Created by astha.a on 08/02/18.
  */
 public class DeliveryExec {
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DeliveryExec)) return false;
 
-        DeliveryExec that = (DeliveryExec) o;
-
-        if (getId() != that.getId()) return false;
-        if (!getCurrentLocation().equals(that.getCurrentLocation())) return false;
-        return getLastOrderDeliveryTime().equals(that.getLastOrderDeliveryTime());
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId();
-        result = 31 * result + getCurrentLocation().hashCode();
-        result = 31 * result + getLastOrderDeliveryTime().hashCode();
-        return result;
-    }
 
     private int id;
     private Location currentLocation;
@@ -67,5 +48,26 @@ public class DeliveryExec {
                 ", currentLocation=" + currentLocation +
                 ", lastOrderDeliveryTime=" + lastOrderDeliveryTime +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DeliveryExec)) return false;
+
+        DeliveryExec that = (DeliveryExec) o;
+
+        if (getId() != that.getId()) return false;
+        if (!getCurrentLocation().equals(that.getCurrentLocation())) return false;
+        return getLastOrderDeliveryTime().equals(that.getLastOrderDeliveryTime());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getCurrentLocation().hashCode();
+        result = 31 * result + getLastOrderDeliveryTime().hashCode();
+        return result;
     }
 }
