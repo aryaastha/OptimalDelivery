@@ -26,19 +26,12 @@ public class Main {
 
 
         int t = 0;
-        for(Double i = 0D; i<2D; i++){
-//            orders.add(new Order(++t,new Restaurant(new Location(i,i)),i));
-        }
 
         orders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
         orders.add(new Order(++t,new Restaurant(new Location(2D,4D)),7D));
         orders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
-
-        for (Double i = 0D ; i<2D ; i++ ){
-//            executives.add(new DeliveryExec(++t,new Location(i,i),i));
-        }
 
         executives.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         executives.add(new DeliveryExec(++t,new Location(6D,8D),5D));

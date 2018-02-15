@@ -27,9 +27,6 @@ public class StrategyTest {
 
 
         int t = 0;
-        for(Double i = 0D; i<2D; i++){
-//            orders.add(new Order(++t,new Restaurant(new Location(i,i)),i));
-        }
 
         orders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
         orders.add(new Order(++t,new Restaurant(new Location(2D,4D)),7D));
@@ -37,21 +34,12 @@ public class StrategyTest {
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        for (Double i = 0D ; i<2D ; i++ ){
-//            executives.add(new DeliveryExec(++t,new Location(i,i),i));
-        }
-
         executives.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         executives.add(new DeliveryExec(++t,new Location(6D,8D),5D));
         executives.add(new DeliveryExec(++t,new Location(9D,10D),3D));
 
 
         ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders,executives);
-//        System.out.println("Order Assignment : \n");
-//        for (OrderAssignment assign : mapping){
-//            System.out.println(assign);
-//        }
-
         return mapping;
     }
 
@@ -127,7 +115,6 @@ public class StrategyTest {
         expectedAnswerForDp.put(order2,exec2);
 
         for (OrderAssignment assign : orderAssignmentsForDp){
-//            System.out.println(expectedAnswerForDp.get(assign.getOrder()));
             assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
@@ -205,7 +192,6 @@ public class StrategyTest {
         expectedAnswerForGreedy.put(order3,exec1);
 
         for (OrderAssignment assign : orderAssignmentsForGreedy){
-//            System.out.println(expectedAnswerForGreedy.get(assign.getOrder()));
             assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
