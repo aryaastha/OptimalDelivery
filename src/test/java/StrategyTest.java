@@ -32,6 +32,7 @@ public class StrategyTest {
         executives.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         executives.add(new DeliveryExec(++t,new Location(6D,8D),5D));
         executives.add(new DeliveryExec(++t,new Location(9D,10D),3D));
+//        executives.add(new DeliveryExec(++t,new Location(4D,8D),1D));
 
 
         ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders,executives);
@@ -102,6 +103,15 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
+        DeliveryExec exec4 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 7,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 4.0,\n" +
+                "\t\t\"longitude\": 8.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 1.0\n" +
+                "}", DeliveryExec.class);
+
         ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
         HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
@@ -110,6 +120,7 @@ public class StrategyTest {
         expectedAnswerForDp.put(order2,exec2);
 
         for (OrderAssignment assign : orderAssignmentsForDp){
+//            System.out.println(assign);
             assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
@@ -187,7 +198,93 @@ public class StrategyTest {
         expectedAnswerForGreedy.put(order3,exec1);
 
         for (OrderAssignment assign : orderAssignmentsForGreedy){
+//            System.out.println(assign);
             assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
+        }
+    }
+
+    @Test
+    public void testLp() throws Exception {
+        String mappingForLp = FileUtils.readFromFile("src/test/resources/attributes3.json");
+
+        Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
+                " \t\"orderId\": 2,\n" +
+                " \t\"restaurant\": {\n" +
+                " \t\t\"restaurantLocation\": {\n" +
+                " \t\t\t\"latitude\": 2.0,\n" +
+                " \t\t\t\"longitude\": 4.0\n" +
+                " \t\t}\n" +
+                " \t},\n" +
+                " \t\"orderedTime\": 7.0\n" +
+                " }", Order.class);
+
+        Order order2 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
+                " \t\"orderId\": 1,\n" +
+                " \t\"restaurant\": {\n" +
+                " \t\t\"restaurantLocation\": {\n" +
+                " \t\t\t\"latitude\": 2.0,\n" +
+                " \t\t\t\"longitude\": 5.0\n" +
+                " \t\t}\n" +
+                " \t},\n" +
+                " \t\"orderedTime\": 9.0\n" +
+                " }", Order.class);
+
+        Order order3 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
+                " \t\"orderId\": 3,\n" +
+                " \t\"restaurant\": {\n" +
+                " \t\t\"restaurantLocation\": {\n" +
+                " \t\t\t\"latitude\": 1.0,\n" +
+                " \t\t\t\"longitude\": 4.0\n" +
+                " \t\t}\n" +
+                " \t},\n" +
+                " \t\"orderedTime\": 9.0\n" +
+                " }",Order.class);
+
+        DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 6,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 9.0,\n" +
+                "\t\t\"longitude\": 10.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 3.0\n" +
+                "}", DeliveryExec.class);
+
+        DeliveryExec exec2 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 5,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 6.0,\n" +
+                "\t\t\"longitude\": 8.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 5.0\n" +
+                "}", DeliveryExec.class);
+
+        DeliveryExec exec3 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 4,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 4.0,\n" +
+                "\t\t\"longitude\": 1.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 2.0\n" +
+                "}", DeliveryExec.class);
+
+        DeliveryExec exec4 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 7,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 4.0,\n" +
+                "\t\t\"longitude\": 8.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 1.0\n" +
+                "}", DeliveryExec.class);
+
+        ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForLp);
+        HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
+
+        expectedAnswerForLp.put(order1,exec1);
+        expectedAnswerForLp.put(order3,exec3);
+        expectedAnswerForLp.put(order2,exec2);
+
+        for (OrderAssignment assign : orderAssignmentsForDp){
+            assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
 }

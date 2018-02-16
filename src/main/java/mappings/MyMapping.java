@@ -23,6 +23,8 @@ public class MyMapping implements Mapping {
             scoreComputer.updateScores(attributeScore, attribute.getWeight());
         }
 
+
+
         return strategy.getFinalAssignment(scoreComputer);
     }
 }
