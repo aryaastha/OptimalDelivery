@@ -8,6 +8,7 @@ import utils.ScoreComputer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  * Created by astha.a on 14/02/18.
@@ -40,6 +41,13 @@ public class DpStrategy implements IStrategy {
             }
         }
 
+        Double[][] costOriginal = new Double[listOfOrders.size()][listOfExecs.size()];
+        for (int i = 0; i < listOfOrders.size(); i++) {
+            for (int j = 0; j < listOfExecs.size(); j++) {
+                costOriginal[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+            }
+        }
+
 
         dp[0] = 0D;
 
@@ -57,15 +65,15 @@ public class DpStrategy implements IStrategy {
         }
 
         int optimalMask = numberOfPerms - 1;
-        int min = Integer.MAX_VALUE;
+        double min = Integer.MAX_VALUE;
         if (listOfExecs.size() == listOfOrders.size()){
             optimalMask = numberOfPerms - 1;
         }else if (listOfExecs.size() > listOfOrders.size()){
             for(int i = 0;i<numberOfPerms;i++){
                 Integer integer = countSetBits(i, N);
                 if (integer == listOfOrders.size()){
-                    if(min>optimalAssignmentMap.get(integer).getValue()){
-                        min = optimalAssignmentMap.get(integer).getValue();
+                    if(min>dp[i]){
+                        min = dp[i];
                         optimalMask = i;
                     }
                 }
@@ -80,6 +88,18 @@ public class DpStrategy implements IStrategy {
             finalAssignment.add(orderAssignmentIntegerPair.getKey());
             optimalMask = orderAssignmentIntegerPair.getValue();
         }
+
+        final double[] optimalCost = {0.0};
+
+
+        finalAssignment.forEach(new Consumer<OrderAssignment>() {
+            @Override
+            public void accept(OrderAssignment orderAssignment) {
+                optimalCost[0] += costOriginal[listOfOrders.indexOf(orderAssignment.getOrder())][listOfExecs.indexOf(orderAssignment.getDeliveryExec())];
+            }
+        });
+
+        System.out.println(optimalCost[0]);
 
 
         return finalAssignment;

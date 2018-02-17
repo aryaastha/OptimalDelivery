@@ -9,6 +9,7 @@ import utils.ScoreComputer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.function.Consumer;
 
 /**
  * Created by astha.a on 16/02/18.
@@ -29,6 +30,13 @@ public class LpStrategy implements IStrategy {
         for (int i = 0; i < listOfOrders.size(); i++) {
             for (int j = 0; j < listOfExecs.size(); j++) {
                 cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+            }
+        }
+
+        Double[][] costOriginal = new Double[listOfOrders.size()][listOfExecs.size()];
+        for (int i = 0; i < listOfOrders.size(); i++) {
+            for (int j = 0; j < listOfExecs.size(); j++) {
+                costOriginal[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
             }
         }
 
@@ -84,44 +92,29 @@ public class LpStrategy implements IStrategy {
 
             if (countOfNumberOfZeroes > 1) {
                 for (int i = 0; i < listOfOrders.size(); i++) {
-                    int l = i + 1;
                     for (int j = 0; j < listOfExecs.size(); j++) {
                         if (cost[i][j] == 0 && isTraversed[i][j] == 0) {
-                            int k = j + 1;
-                            l = i + 1;
+                            optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+                            for (int o = 0; o < listOfOrders.size(); o++) {
+                                isTraversed[o][j]++;
+                            }
+                            int k = j+1;
+                            int l = i+1;
                             while (k < listOfExecs.size() && l < listOfOrders.size()) {
                                 if (cost[l][k] == 0 && isTraversed[l][k] == 0) {
-                                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
                                     optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
                                     for (int o = 0; o < listOfOrders.size(); o++) {
-                                        isTraversed[o][j]++;
                                         isTraversed[o][k]++;
                                     }
                                 }
                                 k++;
                                 l++;
                             }
-
-                            k = j - 1;
-                            l = i + 1;
-                            while (k >= 0 && l < listOfOrders.size()) {
-                                if (cost[l][k] == 0 && isTraversed[l][k] == 0) {
-                                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-                                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
-                                    for (int o = 0; o < listOfOrders.size(); o++) {
-                                        isTraversed[o][j]++;
-                                        isTraversed[o][k]++;
-                                    }
-                                }
-                                k--;
-                                l++;
-                            }
+                            break;
                         }
                     }
-                    i = l + 1;
                 }
             }
-
 
             double min = Integer.MAX_VALUE;
             for (int i = 0; i < listOfOrders.size(); i++) {
@@ -144,8 +137,21 @@ public class LpStrategy implements IStrategy {
             }
         }
 
+
+
         optimalAssignments.forEach(finalAssignment::add);
 
+        final double[] optimalCost = {0.0};
+
+
+        finalAssignment.forEach(new Consumer<OrderAssignment>() {
+            @Override
+            public void accept(OrderAssignment orderAssignment) {
+                optimalCost[0] += costOriginal[listOfOrders.indexOf(orderAssignment.getOrder())][listOfExecs.indexOf(orderAssignment.getDeliveryExec())];
+            }
+        });
+
+        System.out.println(optimalCost[0]);
 
         return finalAssignment;
     }
