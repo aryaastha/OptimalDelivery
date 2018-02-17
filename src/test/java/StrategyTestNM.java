@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by astha.a on 15/02/18.
+ * Created by astha.a on 17/02/18.
  */
-public class StrategyTest {
+public class StrategyTestNM {
     public ArrayList<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(mappingParameters, JsonObject.class);
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
@@ -21,18 +21,19 @@ public class StrategyTest {
 
         int t = 0;
 
-        orders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
-        orders.add(new Order(++t,new Restaurant(new Location(2D,4D)),7D));
-        orders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
+        orders.add(new Order(++t, new Restaurant(new Location(3D, 50D)), 93D));
+        orders.add(new Order(++t, new Restaurant(new Location(10D, 11D)), 10D));
+        orders.add(new Order(++t, new Restaurant(new Location(19D, 50D)), 13D));
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        executives.add(new DeliveryExec(++t,new Location(4D,1D),2D));
-        executives.add(new DeliveryExec(++t,new Location(6D,8D),5D));
-        executives.add(new DeliveryExec(++t,new Location(9D,10D),3D));
+        executives.add(new DeliveryExec(++t, new Location(14D, 10D), 2D));
+        executives.add(new DeliveryExec(++t, new Location(12D, 18D), 55D));
+        executives.add(new DeliveryExec(++t, new Location(9D, 10D), 20D));
+        executives.add(new DeliveryExec(++t, new Location(24D, 28D), 17D));
 
 
-        ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders,executives);
+        ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders, executives);
         return mapping;
     }
 
@@ -71,7 +72,7 @@ public class StrategyTest {
                 " \t\t}\n" +
                 " \t},\n" +
                 " \t\"orderedTime\": 9.0\n" +
-                " }",Order.class);
+                " }", Order.class);
 
         DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 6,\n" +
@@ -112,11 +113,11 @@ public class StrategyTest {
         ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
         HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
-        expectedAnswerForDp.put(order1,exec1);
-        expectedAnswerForDp.put(order3,exec3);
-        expectedAnswerForDp.put(order2,exec2);
+        expectedAnswerForDp.put(order1, exec1);
+        expectedAnswerForDp.put(order3, exec3);
+        expectedAnswerForDp.put(order2, exec2);
 
-        for (OrderAssignment assign : orderAssignmentsForDp){
+        for (OrderAssignment assign : orderAssignmentsForDp) {
             System.out.println(assign);
 //            assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
         }
@@ -124,7 +125,8 @@ public class StrategyTest {
 
     @Test
     public void testGreedy() throws Exception {
-        String mappingForGreedy = FileUtils.readFromFile("src/test/resources/attributes2.json");;
+        String mappingForGreedy = FileUtils.readFromFile("src/test/resources/attributes2.json");
+        ;
 
         Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
@@ -157,7 +159,7 @@ public class StrategyTest {
                 " \t\t}\n" +
                 " \t},\n" +
                 " \t\"orderedTime\": 9.0\n" +
-                " }",Order.class);
+                " }", Order.class);
 
         DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 6,\n" +
@@ -190,11 +192,11 @@ public class StrategyTest {
 
         HashMap<Order, DeliveryExec> expectedAnswerForGreedy = new HashMap<>();
 
-        expectedAnswerForGreedy.put(order1,exec3);
-        expectedAnswerForGreedy.put(order2,exec2);
-        expectedAnswerForGreedy.put(order3,exec1);
+        expectedAnswerForGreedy.put(order1, exec3);
+        expectedAnswerForGreedy.put(order2, exec2);
+        expectedAnswerForGreedy.put(order3, exec1);
 
-        for (OrderAssignment assign : orderAssignmentsForGreedy){
+        for (OrderAssignment assign : orderAssignmentsForGreedy) {
             System.out.println(assign);
 //            assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
         }
@@ -235,7 +237,7 @@ public class StrategyTest {
                 " \t\t}\n" +
                 " \t},\n" +
                 " \t\"orderedTime\": 9.0\n" +
-                " }",Order.class);
+                " }", Order.class);
 
         DeliveryExec exec1 = GsonFactory.getInstance().getGson().fromJson("{\n" +
                 "\t\"id\": 6,\n" +
@@ -276,11 +278,11 @@ public class StrategyTest {
         ArrayList<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
         HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
 
-        expectedAnswerForLp.put(order1,exec1);
-        expectedAnswerForLp.put(order3,exec3);
-        expectedAnswerForLp.put(order2,exec2);
+        expectedAnswerForLp.put(order1, exec1);
+        expectedAnswerForLp.put(order3, exec3);
+        expectedAnswerForLp.put(order2, exec2);
 
-        for (OrderAssignment assign : orderAssignmentsForLp){
+        for (OrderAssignment assign : orderAssignmentsForLp) {
             System.out.println(assign);
 //            assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
         }

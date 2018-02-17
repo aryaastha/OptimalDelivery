@@ -1,14 +1,11 @@
 package strategies;
 
-import beans.DeliveryExec;
-import beans.Order;
-import beans.OrderAssignment;
+import beans.*;
 import javafx.util.Pair;
 import utils.ScoreComputer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 /**
  * Created by astha.a on 14/02/18.
@@ -33,21 +30,22 @@ public class DpStrategy implements IStrategy {
         for (Integer i = 0; i < numberOfPerms; i++) {
             dp[i] = Double.MAX_VALUE;
         }
+        if (listOfExecs.size() > listOfOrders.size()){
+            insertDummyOrders(listOfOrders, listOfExecs.size()-listOfOrders.size());
+        }
+
+        if (listOfExecs.size() < listOfOrders.size()){
+            insertDummyDe(listOfExecs, listOfOrders.size()-listOfExecs.size());
+        }
 
         Double[][] cost = new Double[listOfOrders.size()][listOfExecs.size()];
         for (int i = 0; i < listOfOrders.size(); i++) {
             for (int j = 0; j < listOfExecs.size(); j++) {
-                cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+                if (allCombinationScoreList.containsKey(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)))) {
+                    cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+                }else cost[i][j] = 0.0;
             }
         }
-
-        Double[][] costOriginal = new Double[listOfOrders.size()][listOfExecs.size()];
-        for (int i = 0; i < listOfOrders.size(); i++) {
-            for (int j = 0; j < listOfExecs.size(); j++) {
-                costOriginal[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-            }
-        }
-
 
         dp[0] = 0D;
 
@@ -85,21 +83,11 @@ public class DpStrategy implements IStrategy {
         Pair<OrderAssignment, Integer> orderAssignmentIntegerPair;
         while (optimalMask > 0) {
             orderAssignmentIntegerPair = optimalAssignmentMap.get(optimalMask);
-            finalAssignment.add(orderAssignmentIntegerPair.getKey());
+            if(!(orderAssignmentIntegerPair.getKey().getOrder() instanceof DummyOrder) && !(orderAssignmentIntegerPair.getKey().getDeliveryExec() instanceof DummyDE)) {
+                finalAssignment.add(orderAssignmentIntegerPair.getKey());
+            }
             optimalMask = orderAssignmentIntegerPair.getValue();
         }
-
-        final double[] optimalCost = {0.0};
-
-
-        finalAssignment.forEach(new Consumer<OrderAssignment>() {
-            @Override
-            public void accept(OrderAssignment orderAssignment) {
-                optimalCost[0] += costOriginal[listOfOrders.indexOf(orderAssignment.getOrder())][listOfExecs.indexOf(orderAssignment.getDeliveryExec())];
-            }
-        });
-
-        System.out.println(optimalCost[0]);
 
 
         return finalAssignment;
@@ -120,4 +108,15 @@ public class DpStrategy implements IStrategy {
     }
 
 
+    private void insertDummyOrders(ArrayList<Order> listOfOrders, int n){
+        for(int i = 0; i < n ; i++){
+            listOfOrders.add(new DummyOrder(0, new Restaurant(new Location(0D,0D)),0D));
+        }
+    }
+
+    private void insertDummyDe(ArrayList<DeliveryExec> listOfOrders, int n){
+        for(int i = 0; i < n ; i++){
+            listOfOrders.add(new DummyDE(0, new Location(0D,0D),0D));
+        }
+    }
 }

@@ -17,39 +17,49 @@ public class TestClass {
 
         int t = 0;
 
-        listOfOrders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
-        listOfOrders.add(new Order(++t,new Restaurant(new Location(2D,4D)),7D));
-        listOfOrders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
-        listOfOrders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
+//        listOfOrders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
+//        listOfOrders.add(new Order(++t,new Restaurant(new Location(2D,4D)),7D));
+//        listOfOrders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
+//        listOfOrders.add(new Order(++t,new Restaurant(new Location(1D,4D)),9D));
+
+        listOfOrders.add(new Order(++t,new Restaurant(new Location(3D,50D)),93D));
+        listOfOrders.add(new Order(++t,new Restaurant(new Location(10D,49D)),73D));
+        listOfOrders.add(new Order(++t,new Restaurant(new Location(19D,41D)),91D));
+        listOfOrders.add(new Order(++t,new Restaurant(new Location(19D,41D)),91D));
 
         ArrayList<DeliveryExec> listOfExecs = new ArrayList<DeliveryExec>();
 
-        listOfExecs.add(new DeliveryExec(++t,new Location(4D,1D),2D));
-        listOfExecs.add(new DeliveryExec(++t,new Location(6D,8D),5D));
-        listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
-        listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
+//        listOfExecs.add(new DeliveryExec(++t,new Location(4D,1D),2D));
+//        listOfExecs.add(new DeliveryExec(++t,new Location(6D,8D),5D));
+//        listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
+//        listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
 
-        Double[][] cost = new Double[listOfOrders.size()][listOfExecs.size()];
+        listOfExecs.add(new DeliveryExec(++t,new Location(24D,21D),72D));
+        listOfExecs.add(new DeliveryExec(++t,new Location(26D,28D),55D));
+        listOfExecs.add(new DeliveryExec(++t,new Location(29D,20D),23D));
+        listOfExecs.add(new DeliveryExec(++t,new Location(24D,28D),71D));
 
-        cost[0][0] = 5.0;
-        cost[0][1] = 3.0;
-        cost[0][2] = 2.0;
-        cost[0][3] = 8.0;
+        Double[][] cost = new Double[4][listOfExecs.size()];
 
-        cost[1][0] = 7.0;
-        cost[1][1] = 9.0;
-        cost[1][2] = 2.0;
-        cost[1][3] = 6.0;
+        cost[0][0] = 16.629202210680475;
+        cost[0][1] = 15.81245292446898;
+        cost[0][2] = 16.12497241541839;
+        cost[0][3] = 15.861876737475194;
 
-        cost[2][0] = 6.0;
-        cost[2][1] = 4.0;
-        cost[2][2] = 5.0;
-        cost[2][3] = 7.0;
+        cost[1][0] = 18.164494274578676;
+        cost[1][1] = 17.4453805786837;
+        cost[1][2] = 17.74209357395248;
+        cost[1][3] = 17.52170512841431;
 
-        cost[3][0] = 5.0;
-        cost[3][1] = 7.0;
-        cost[3][2] = 7.0;
-        cost[3][3] = 8.0;
+        cost[2][0] = 14.781948874860893;
+        cost[2][1] = 14.017403991602574;
+        cost[2][2] = 14.314515139668822;
+        cost[2][3] = 14.073902217476993;
+
+        cost[3][0] = 0.0;
+        cost[3][1] = 0.0;
+        cost[3][2] = 0.0;
+        cost[3][3] = 0.0;
 
 
 //        cost[0][0] = 2.0;

@@ -29,7 +29,7 @@ public class Main {
         executives.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         executives.add(new DeliveryExec(++t,new Location(6D,8D),5D));
         executives.add(new DeliveryExec(++t,new Location(9D,10D),3D));
-//        executives.add(new DeliveryExec(++t,new Location(4D,8D),1D));
+        executives.add(new DeliveryExec(++t,new Location(4D,8D),1D));
 
         ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders, executives);
         mapping.forEach(System.out::println);
