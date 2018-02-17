@@ -29,7 +29,6 @@ public class DpStrategy implements IStrategy {
         double[] dp = new double[numberOfPerms];
         Arrays.fill(dp, Double.MAX_VALUE);
 
-
         Map<Integer, Pair<OrderAssignment, Integer>> optimalAssignmentMap = new HashMap<>();
 
         double[][] cost = helper.getCostArray();

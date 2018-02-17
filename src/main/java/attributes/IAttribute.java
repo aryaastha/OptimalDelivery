@@ -13,6 +13,5 @@ import java.util.List;
  */
 public interface IAttribute {
     List<Pair<OrderAssignment, Double>> getNormalisedScore(List<Order> order, List<DeliveryExec> de);
-
     Double getWeight();
 }

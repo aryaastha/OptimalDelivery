@@ -38,7 +38,7 @@ public class DpTest {
 
     @Test
     public void testDp() throws Exception {
-        String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes3.json");
+        String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes.json");
 
         Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +

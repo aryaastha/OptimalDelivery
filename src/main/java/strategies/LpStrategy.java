@@ -3,10 +3,11 @@ package strategies;
 import beans.DeliveryExec;
 import beans.Order;
 import beans.OrderAssignment;
-import sun.java2d.xr.MutableInteger;
+import org.apache.commons.lang.mutable.MutableInt;
 import utils.AssignmentHelper;
 import utils.ScoreComputer;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +16,6 @@ import java.util.Set;
  * Created by astha.a on 16/02/18.
  */
 public class LpStrategy implements IStrategy {
-
-
     @Override
     public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
         AssignmentHelper helper = new AssignmentHelper(updatedScores);
@@ -34,30 +33,26 @@ public class LpStrategy implements IStrategy {
         while (optimalAssignments.size() != size) {
             optimalAssignments.clear();
             int[][] isTraversed = new int[size][size];
-
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    isTraversed[i][j] = 0;
-                }
-            }
+            for (int[] i : isTraversed)
+                Arrays.fill(i, 0);
 
 
             for (int i = 0; i < size; i++) {
-                MutableInteger columnId = new MutableInteger(0);
+                MutableInt columnId = new MutableInt(0);
                 if (countZerosInRow(cost, size, i, columnId, isTraversed) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.getValue())));
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
                     for (int j = 0; j < size; j++) {
-                        isTraversed[j][columnId.getValue()]++;
+                        isTraversed[j][columnId.intValue()]++;
                     }
                 }
             }
 
             for (int i = 0; i < size; i++) {
-                MutableInteger rowId = new MutableInteger(0);
+                MutableInt rowId = new MutableInt(0);
                 if (countZerosInColumn(cost, size, i, rowId, isTraversed) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.getValue()), listOfExecs.get(i)));
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
                     for (int j = 0; j < size; j++) {
-                        isTraversed[rowId.getValue()][j]++;
+                        isTraversed[rowId.intValue()][j]++;
                     }
                 }
 
@@ -66,7 +61,7 @@ public class LpStrategy implements IStrategy {
             int countOfNumberOfZeroes = 0;
 
             for (int i = 0; i < size; i++) {
-                countOfNumberOfZeroes += countZerosInRow(cost, size, i, new MutableInteger(0), isTraversed);
+                countOfNumberOfZeroes += countZerosInRow(cost, size, i, new MutableInt(0), isTraversed);
             }
 
 
@@ -147,7 +142,7 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    public static int countZerosInRow(double[][] cost, int columns, int rowId, MutableInteger col, int[][] isTraversed) {
+    public static int countZerosInRow(double[][] cost, int columns, int rowId, MutableInt col, int[][] isTraversed) {
         int count = 0;
 
         for (int i = 0; i < columns; i++) {
@@ -160,7 +155,7 @@ public class LpStrategy implements IStrategy {
         return count;
     }
 
-    public static int countZerosInColumn(double[][] cost, int rows, int colId, MutableInteger row, int[][] isTraversed) {
+    public static int countZerosInColumn(double[][] cost, int rows, int colId, MutableInt row, int[][] isTraversed) {
         int count = 0;
         for (int i = 0; i < rows; i++) {
             if (isTraversed[i][colId] == 0 && cost[i][colId] == 0) {

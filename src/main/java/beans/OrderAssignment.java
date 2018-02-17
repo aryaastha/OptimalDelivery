@@ -4,8 +4,8 @@ package beans;
  * Created by astha.a on 13/02/18.
  */
 public class OrderAssignment {
-    Order order;
-    DeliveryExec deliveryExec;
+    private Order order;
+    private DeliveryExec deliveryExec;
 
     public OrderAssignment(Order order, DeliveryExec deliveryExec) {
         this.order = order;

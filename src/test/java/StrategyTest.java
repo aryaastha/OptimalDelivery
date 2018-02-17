@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  * Created by astha.a on 15/02/18.
  */
 public class StrategyTest {
-    public List<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private List<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(mappingParameters, JsonObject.class);
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
         List<Order> orders = new ArrayList<Order>();

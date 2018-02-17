@@ -14,10 +14,6 @@ public class Restaurant {
         return restaurantLocation;
     }
 
-    public void setRestaurantLocation(Location restaurantLocation) {
-        this.restaurantLocation = restaurantLocation;
-    }
-
     @Override
     public String toString() {
         return "Restaurant{" +
