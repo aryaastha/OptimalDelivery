@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by astha.a on 17/02/18.
  */
@@ -22,16 +24,16 @@ public class StrategyTestNM {
 
         int t = 0;
 
-        orders.add(new Order(++t, new Restaurant(new Location(3D, 50D)), 93D));
-        orders.add(new Order(++t, new Restaurant(new Location(10D, 11D)), 10D));
-        orders.add(new Order(++t, new Restaurant(new Location(19D, 50D)), 13D));
+        orders.add(new Order(++t, new Restaurant(new Location(2D, 5D)), 9D));
+        orders.add(new Order(++t, new Restaurant(new Location(2D, 4D)), 7D));
+        orders.add(new Order(++t, new Restaurant(new Location(1D, 4D)), 9D));
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        executives.add(new DeliveryExec(++t, new Location(14D, 10D), 2D));
-        executives.add(new DeliveryExec(++t, new Location(12D, 18D), 55D));
-        executives.add(new DeliveryExec(++t, new Location(9D, 10D), 20D));
-        executives.add(new DeliveryExec(++t, new Location(24D, 28D), 17D));
+        executives.add(new DeliveryExec(++t, new Location(4D, 1D), 2D));
+        executives.add(new DeliveryExec(++t, new Location(6D, 8D), 5D));
+        executives.add(new DeliveryExec(++t, new Location(9D, 10D), 3D));
+        executives.add(new DeliveryExec(++t, new Location(4D, 8D), 1D));
 
 
         List<OrderAssignment> mapping = myImplementation.getMapping(orders, executives);
@@ -114,13 +116,12 @@ public class StrategyTestNM {
         List<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
         HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
-        expectedAnswerForDp.put(order1, exec1);
+        expectedAnswerForDp.put(order1, exec2);
+        expectedAnswerForDp.put(order2, exec4);
         expectedAnswerForDp.put(order3, exec3);
-        expectedAnswerForDp.put(order2, exec2);
 
         for (OrderAssignment assign : orderAssignmentsForDp) {
-            System.out.println(assign);
-//            assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
+            assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
 
@@ -189,17 +190,26 @@ public class StrategyTestNM {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
+        DeliveryExec exec4 = GsonFactory.getInstance().getGson().fromJson("{\n" +
+                "\t\"id\": 7,\n" +
+                "\t\"currentLocation\": {\n" +
+                "\t\t\"latitude\": 4.0,\n" +
+                "\t\t\"longitude\": 8.0\n" +
+                "\t},\n" +
+                "\t\"lastOrderDeliveryTime\": 1.0\n" +
+                "}", DeliveryExec.class);
+
+
         List<OrderAssignment> orderAssignmentsForGreedy = runTest(mappingForGreedy);
 
         HashMap<Order, DeliveryExec> expectedAnswerForGreedy = new HashMap<>();
 
         expectedAnswerForGreedy.put(order1, exec3);
-        expectedAnswerForGreedy.put(order2, exec2);
-        expectedAnswerForGreedy.put(order3, exec1);
+        expectedAnswerForGreedy.put(order2, exec4);
+        expectedAnswerForGreedy.put(order3, exec2);
 
         for (OrderAssignment assign : orderAssignmentsForGreedy) {
-            System.out.println(assign);
-//            assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
+            assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
 
@@ -279,13 +289,12 @@ public class StrategyTestNM {
         List<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
         HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
 
-        expectedAnswerForLp.put(order1, exec1);
+        expectedAnswerForLp.put(order1, exec2);
+        expectedAnswerForLp.put(order2, exec4);
         expectedAnswerForLp.put(order3, exec3);
-        expectedAnswerForLp.put(order2, exec2);
 
         for (OrderAssignment assign : orderAssignmentsForLp) {
-            System.out.println(assign);
-//            assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
+            assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
 }

@@ -12,7 +12,7 @@ public class DummyDE extends DeliveryExec {
     }
 
     public static List<DeliveryExec> getDummyDeliveryExecs(int n) {
-        if (n > 0) return Collections.nCopies(n, new DeliveryExec());
+        if (n > 0) return Collections.nCopies(n, new DummyDE());
         return Collections.emptyList();
     }
 }

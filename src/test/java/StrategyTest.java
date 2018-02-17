@@ -103,15 +103,6 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec4 = GsonFactory.getInstance().getGson().fromJson("{\n" +
-                "\t\"id\": 7,\n" +
-                "\t\"currentLocation\": {\n" +
-                "\t\t\"latitude\": 4.0,\n" +
-                "\t\t\"longitude\": 8.0\n" +
-                "\t},\n" +
-                "\t\"lastOrderDeliveryTime\": 1.0\n" +
-                "}", DeliveryExec.class);
-
         List<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
         HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
@@ -120,7 +111,6 @@ public class StrategyTest {
         expectedAnswerForDp.put(order2,exec2);
 
         for (OrderAssignment assign : orderAssignmentsForDp){
-//            System.out.println(assign);
             assertEquals(expectedAnswerForDp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
@@ -198,7 +188,6 @@ public class StrategyTest {
         expectedAnswerForGreedy.put(order3,exec1);
 
         for (OrderAssignment assign : orderAssignmentsForGreedy){
-//            System.out.println(assign);
             assertEquals(expectedAnswerForGreedy.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
@@ -267,14 +256,6 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
-        DeliveryExec exec4 = GsonFactory.getInstance().getGson().fromJson("{\n" +
-                "\t\"id\": 7,\n" +
-                "\t\"currentLocation\": {\n" +
-                "\t\t\"latitude\": 4.0,\n" +
-                "\t\t\"longitude\": 8.0\n" +
-                "\t},\n" +
-                "\t\"lastOrderDeliveryTime\": 1.0\n" +
-                "}", DeliveryExec.class);
 
         List<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
         HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
@@ -284,7 +265,6 @@ public class StrategyTest {
         expectedAnswerForLp.put(order2,exec2);
 
         for (OrderAssignment assign : orderAssignmentsForLp){
-//            System.out.println(assign);
             assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
