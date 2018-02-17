@@ -8,22 +8,21 @@ import javafx.util.Pair;
 import strategies.IStrategy;
 import utils.ScoreComputer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by astha.a on 13/02/18.
  */
 public class MyMapping implements Mapping {
-    private ArrayList<IAttribute> attributes;
+    private List<IAttribute> attributes;
     private IStrategy strategy;
-    public ArrayList<OrderAssignment> getMapping(ArrayList<Order> orders, ArrayList<DeliveryExec> deliveryExec) {
+
+    public List<OrderAssignment> getMapping(List<Order> orders, List<DeliveryExec> deliveryExec) {
         ScoreComputer scoreComputer = new ScoreComputer();
         for (IAttribute attribute : attributes) {
-            ArrayList<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, deliveryExec);
+            List<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, deliveryExec);
             scoreComputer.updateScores(attributeScore, attribute.getWeight());
         }
-
-
 
         return strategy.getFinalAssignment(scoreComputer);
     }

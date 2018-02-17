@@ -4,6 +4,7 @@ import sun.java2d.xr.MutableInteger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import static strategies.LpStrategy.*;
 
@@ -12,7 +13,7 @@ import static strategies.LpStrategy.*;
  */
 public class TestClass {
     public static void main(String[] args) {
-        ArrayList<Order> listOfOrders = new ArrayList<Order>();
+        List<Order> listOfOrders = new ArrayList<Order>();
 
 
         int t = 0;
@@ -27,7 +28,7 @@ public class TestClass {
         listOfOrders.add(new Order(++t,new Restaurant(new Location(19D,41D)),91D));
         listOfOrders.add(new Order(++t,new Restaurant(new Location(19D,41D)),91D));
 
-        ArrayList<DeliveryExec> listOfExecs = new ArrayList<DeliveryExec>();
+        List<DeliveryExec> listOfExecs = new ArrayList<DeliveryExec>();
 
 //        listOfExecs.add(new DeliveryExec(++t,new Location(4D,1D),2D));
 //        listOfExecs.add(new DeliveryExec(++t,new Location(6D,8D),5D));
@@ -39,7 +40,7 @@ public class TestClass {
         listOfExecs.add(new DeliveryExec(++t,new Location(29D,20D),23D));
         listOfExecs.add(new DeliveryExec(++t,new Location(24D,28D),71D));
 
-        Double[][] cost = new Double[4][listOfExecs.size()];
+        double[][] cost = new double[4][listOfExecs.size()];
 
         cost[0][0] = 16.629202210680475;
         cost[0][1] = 15.81245292446898;

@@ -17,7 +17,7 @@ public class ScoreComputer {
         scores = new HashMap<>();
     }
 
-    public void updateScores(ArrayList<Pair<OrderAssignment, Double>> attributeScore, Double weight) {
+    public void updateScores(List<Pair<OrderAssignment, Double>> attributeScore, Double weight) {
         for (Pair<OrderAssignment, Double> assign : attributeScore) {
             if (scores.containsKey(assign.getKey())) {
                 scores.put(assign.getKey(), weight * assign.getValue() + scores.get(assign.getKey()));
@@ -25,7 +25,7 @@ public class ScoreComputer {
         }
     }
 
-    public ArrayList<Pair<OrderAssignment, Double>> getUpdatedScoresAsList() {
+    public List<Pair<OrderAssignment, Double>> getUpdatedScoresAsList() {
         ArrayList<Pair<OrderAssignment, Double>> allCombinationScores = new ArrayList<>();
         for (Map.Entry<OrderAssignment, Double> entries : scores.entrySet()) {
             allCombinationScores.add(new Pair<>(entries.getKey(), entries.getValue()));
@@ -37,21 +37,15 @@ public class ScoreComputer {
         return scores;
     }
 
-    public ArrayList<Order> getOrderList(){
+    public List<Order> getOrderList() {
         Set<Order> orders = new HashSet<>();
-        ArrayList<Order> listOfOrders = new ArrayList<>();
-        Set<OrderAssignment> orderAssignments = scores.keySet();
-        orderAssignments.forEach(orderAssignment -> orders.add(orderAssignment.getOrder()));
-        listOfOrders.addAll(orders);
-        return listOfOrders;
+        scores.keySet().forEach(orderAssignment -> orders.add(orderAssignment.getOrder()));
+        return new ArrayList<>(orders);
     }
 
-    public ArrayList<DeliveryExec> getDeList(){
+    public List<DeliveryExec> getDeList() {
         Set<DeliveryExec> deliveryExecs = new HashSet<>();
-        ArrayList<DeliveryExec> listOfDe = new ArrayList<>();
-        Set<OrderAssignment> orderAssignments = scores.keySet();
-        orderAssignments.forEach(orderAssignment -> deliveryExecs.add(orderAssignment.getDeliveryExec()));
-        listOfDe.addAll(deliveryExecs);
-        return listOfDe;
+        scores.keySet().forEach(orderAssignment -> deliveryExecs.add(orderAssignment.getDeliveryExec()));
+        return new ArrayList<>(deliveryExecs);
     }
 }

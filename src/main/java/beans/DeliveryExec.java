@@ -16,30 +16,23 @@ public class DeliveryExec {
         this.lastOrderDeliveryTime = lastOrderDeliveryTime;
     }
 
+    public DeliveryExec() {}
+
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Location getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
 
     public Double getLastOrderDeliveryTime() {
         return lastOrderDeliveryTime;
     }
 
-    public void setLastOrderDeliveryTime(Double lastOrderDeliveryTime) {
-        this.lastOrderDeliveryTime = lastOrderDeliveryTime;
-    }
 
     @Override
     public String toString() {

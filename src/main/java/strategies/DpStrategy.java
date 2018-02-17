@@ -1,57 +1,43 @@
 package strategies;
 
-import beans.*;
+import beans.DeliveryExec;
+import beans.Order;
+import beans.OrderAssignment;
 import javafx.util.Pair;
+import utils.AssignmentHelper;
 import utils.ScoreComputer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by astha.a on 14/02/18.
  */
 public class DpStrategy implements IStrategy {
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
-        HashMap<OrderAssignment, Double> allCombinationScoreList = updatedScores.getScores();
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+        Set<OrderAssignment> finalAssignment = new HashSet<>();
 
-        ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
-
-        ArrayList<Order> listOfOrders = updatedScores.getOrderList();
-        ArrayList<DeliveryExec> listOfExecs = updatedScores.getDeList();
+        AssignmentHelper helper = new AssignmentHelper(updatedScores);
+        List<Order> listOfOrders = helper.getOrders();
+        List<DeliveryExec> listOfExecs = helper.getDeliveryExecs();
 
         Integer N = listOfExecs.size();
 
         int numberOfPerms = (int) (Math.pow(2D, N));
 
-        Double[] dp = new Double[numberOfPerms];
+        double[] dp = new double[numberOfPerms];
+        Arrays.fill(dp, Double.MAX_VALUE);
 
-        HashMap<Integer, Pair<OrderAssignment, Integer>> optimalAssignmentMap = new HashMap<>();
-        for (Integer i = 0; i < numberOfPerms; i++) {
-            dp[i] = Double.MAX_VALUE;
-        }
-        if (listOfExecs.size() > listOfOrders.size()){
-            insertDummyOrders(listOfOrders, listOfExecs.size()-listOfOrders.size());
-        }
 
-        if (listOfExecs.size() < listOfOrders.size()){
-            insertDummyDe(listOfExecs, listOfOrders.size()-listOfExecs.size());
-        }
+        Map<Integer, Pair<OrderAssignment, Integer>> optimalAssignmentMap = new HashMap<>();
 
-        Double[][] cost = new Double[listOfOrders.size()][listOfExecs.size()];
-        for (int i = 0; i < listOfOrders.size(); i++) {
-            for (int j = 0; j < listOfExecs.size(); j++) {
-                if (allCombinationScoreList.containsKey(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)))) {
-                    cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-                }else cost[i][j] = 0.0;
-            }
-        }
+        double[][] cost = helper.getCostArray();
 
         dp[0] = 0D;
 
         for (Integer mask = 0; mask < numberOfPerms; mask++) {
             Integer order = countSetBits(mask, N);
-            for (Integer exec = 0; exec < N && order<listOfOrders.size(); exec++) {
+            for (Integer exec = 0; exec < N && order < listOfOrders.size(); exec++) {
                 if (!checkIfSet(mask, exec)) {
                     Integer index = mask | (1 << exec);
                     if (dp[index] > (dp[mask] + cost[order][exec])) {
@@ -63,14 +49,14 @@ public class DpStrategy implements IStrategy {
         }
 
         int optimalMask = numberOfPerms - 1;
-        double min = Integer.MAX_VALUE;
-        if (listOfExecs.size() == listOfOrders.size()){
+        double min = Double.MAX_VALUE;
+        if (listOfExecs.size() == listOfOrders.size()) {
             optimalMask = numberOfPerms - 1;
-        }else if (listOfExecs.size() > listOfOrders.size()){
-            for(int i = 0;i<numberOfPerms;i++){
+        } else if (listOfExecs.size() > listOfOrders.size()) {
+            for (int i = 0; i < numberOfPerms; i++) {
                 Integer integer = countSetBits(i, N);
-                if (integer == listOfOrders.size()){
-                    if(min>dp[i]){
+                if (integer == listOfOrders.size()) {
+                    if (min > dp[i]) {
                         min = dp[i];
                         optimalMask = i;
                     }
@@ -78,19 +64,15 @@ public class DpStrategy implements IStrategy {
             }
         }
 
+        Pair<OrderAssignment, Integer> optimalAssignmentMask;
 
-
-        Pair<OrderAssignment, Integer> orderAssignmentIntegerPair;
         while (optimalMask > 0) {
-            orderAssignmentIntegerPair = optimalAssignmentMap.get(optimalMask);
-            if(!(orderAssignmentIntegerPair.getKey().getOrder() instanceof DummyOrder) && !(orderAssignmentIntegerPair.getKey().getDeliveryExec() instanceof DummyDE)) {
-                finalAssignment.add(orderAssignmentIntegerPair.getKey());
-            }
-            optimalMask = orderAssignmentIntegerPair.getValue();
+            optimalAssignmentMask = optimalAssignmentMap.get(optimalMask);
+            finalAssignment.add(optimalAssignmentMask.getKey());
+            optimalMask = optimalAssignmentMask.getValue();
         }
 
-
-        return finalAssignment;
+        return helper.filterDummies(finalAssignment);
     }
 
     private Integer countSetBits(Integer mask, int N) {
@@ -107,16 +89,4 @@ public class DpStrategy implements IStrategy {
         return (mask & (1 << bit)) != 0;
     }
 
-
-    private void insertDummyOrders(ArrayList<Order> listOfOrders, int n){
-        for(int i = 0; i < n ; i++){
-            listOfOrders.add(new DummyOrder(0, new Restaurant(new Location(0D,0D)),0D));
-        }
-    }
-
-    private void insertDummyDe(ArrayList<DeliveryExec> listOfOrders, int n){
-        for(int i = 0; i < n ; i++){
-            listOfOrders.add(new DummyDE(0, new Location(0D,0D),0D));
-        }
-    }
 }

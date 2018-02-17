@@ -1,12 +1,15 @@
 package strategies;
 
-import beans.*;
+import beans.DeliveryExec;
+import beans.Order;
+import beans.OrderAssignment;
 import sun.java2d.xr.MutableInteger;
+import utils.AssignmentHelper;
 import utils.ScoreComputer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by astha.a on 16/02/18.
@@ -15,37 +18,18 @@ public class LpStrategy implements IStrategy {
 
 
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
-        HashMap<OrderAssignment, Double> allCombinationScoreList = updatedScores.getScores();
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+        AssignmentHelper helper = new AssignmentHelper(updatedScores);
+        List<Order> listOfOrders = helper.getOrders();
+        List<DeliveryExec> listOfExecs = helper.getDeliveryExecs();
 
-        ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
-
-        ArrayList<Order> listOfOrders = updatedScores.getOrderList();
-        ArrayList<DeliveryExec> listOfExecs = updatedScores.getDeList();
-
-        if (listOfExecs.size() > listOfOrders.size()){
-            insertDummyOrders(listOfOrders, listOfExecs.size()-listOfOrders.size());
-        }
-
-        if (listOfExecs.size() < listOfOrders.size()){
-            insertDummyDe(listOfExecs, listOfOrders.size()-listOfExecs.size());
-        }
-
-        Double[][] cost = new Double[listOfOrders.size()][listOfExecs.size()];
-        for (int i = 0; i < listOfOrders.size(); i++) {
-            for (int j = 0; j < listOfExecs.size(); j++) {
-                if (allCombinationScoreList.containsKey(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)))) {
-                    cost[i][j] = allCombinationScoreList.get(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-                }else cost[i][j] = 0.0;
-            }
-        }
-
+        double[][] cost = helper.getCostArray();
 
         simplifyRows(cost, listOfOrders.size(), listOfExecs.size());
 
         simplifyColumns(cost, listOfOrders.size(), listOfExecs.size());
 
-        HashSet<OrderAssignment> optimalAssignments = new HashSet<>();
+        Set<OrderAssignment> optimalAssignments = new HashSet<>();
 
         while (optimalAssignments.size() != listOfOrders.size()) {
             optimalAssignments.clear();
@@ -136,18 +120,10 @@ public class LpStrategy implements IStrategy {
                 }
             }
         }
-
-
-        optimalAssignments.forEach(orderAssignment -> {
-            if (!(orderAssignment.getOrder() instanceof  DummyOrder) && !(orderAssignment.getDeliveryExec() instanceof  DummyDE)){
-                finalAssignment.add(orderAssignment);
-            }
-        });
-
-        return finalAssignment;
+        return helper.filterDummies(optimalAssignments);
     }
 
-    public static void simplifyRows(Double[][] cost, int rows, int columns) {
+    public static void simplifyRows(double[][] cost, int rows, int columns) {
         for (int i = 0; i < rows; i++) {
             double min = Double.MAX_VALUE;
             for (int j = 0; j < columns; j++) {
@@ -161,7 +137,7 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    public static void simplifyColumns(Double[][] cost, int rows, int columns) {
+    public static void simplifyColumns(double[][] cost, int rows, int columns) {
         for (int i = 0; i < columns; i++) {
             double min = Double.MAX_VALUE;
             for (int j = 0; j < rows; j++) {
@@ -175,7 +151,7 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    public static int countZerosInRow(Double[][] cost, int columns, int rowId, MutableInteger col, int[][] isTraversed) {
+    public static int countZerosInRow(double[][] cost, int columns, int rowId, MutableInteger col, int[][] isTraversed) {
         int count = 0;
 
         for (int i = 0; i < columns; i++) {
@@ -188,7 +164,7 @@ public class LpStrategy implements IStrategy {
         return count;
     }
 
-    public static int countZerosInColumn(Double[][] cost, int rows, int colId, MutableInteger row, int[][] isTraversed) {
+    public static int countZerosInColumn(double[][] cost, int rows, int colId, MutableInteger row, int[][] isTraversed) {
         int count = 0;
         for (int i = 0; i < rows; i++) {
             if (isTraversed[i][colId] == 0 && cost[i][colId] == 0) {
@@ -198,17 +174,5 @@ public class LpStrategy implements IStrategy {
             }
         }
         return count;
-    }
-
-    private void insertDummyOrders(ArrayList<Order> listOfOrders, int n){
-        for(int i = 0; i < n ; i++){
-            listOfOrders.add(new DummyOrder(0, new Restaurant(new Location(0D,0D)),0D));
-        }
-    }
-
-    private void insertDummyDe(ArrayList<DeliveryExec> listOfOrders, int n){
-        for(int i = 0; i < n ; i++){
-            listOfOrders.add(new DummyDE(0, new Location(0D,0D),0D));
-        }
     }
 }

@@ -4,15 +4,17 @@ package beans;
  * Created by astha.a on 08/02/18.
  */
 public class Order {
-    Integer orderId;
-    Restaurant restaurant;
-    Double orderedTime;
+    private Integer orderId;
+    private Restaurant restaurant;
+    private Double orderedTime;
 
     public Order(Integer orderId, Restaurant res, Double orderedTime) {
         this.orderId = orderId;
         this.restaurant = res;
         this.orderedTime = orderedTime;
     }
+
+    public Order() {}
 
     public Restaurant getRestaurant() {
         return restaurant;
@@ -24,10 +26,6 @@ public class Order {
 
     public Integer getOrderId() {
         return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
     }
 
     @Override

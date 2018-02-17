@@ -7,6 +7,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by astha.a on 13/02/18.
@@ -18,8 +19,8 @@ public class DeLastOrderTime implements IAttribute {
         this.weight = weight;
     }
 
-    public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
-        ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
+    public List<Pair<OrderAssignment, Double>> getNormalisedScore(List<Order> order, List<DeliveryExec> de) {
+        List<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
 
         HashMap<DeliveryExec, Double> deScore = getNormalisedScore(de);
 
@@ -33,7 +34,7 @@ public class DeLastOrderTime implements IAttribute {
         return allCombinations;
     }
 
-    private HashMap<DeliveryExec, Double> getNormalisedScore(ArrayList<DeliveryExec> deliveryExecs) {
+    private HashMap<DeliveryExec, Double> getNormalisedScore(List<DeliveryExec> deliveryExecs) {
         Double maxLastOrderTime = 0D;
         Double minLastOrderTime = Double.MAX_VALUE;
 

@@ -6,10 +6,7 @@ import beans.OrderAssignment;
 import javafx.util.Pair;
 import utils.ScoreComputer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by astha.a on 14/02/18.
@@ -17,8 +14,8 @@ import java.util.Set;
 public class GreedyStrategy implements IStrategy {
 
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
-        ArrayList<Pair<OrderAssignment, Double>> allCombinationScoreList = updatedScores.getUpdatedScoresAsList();
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+        List<Pair<OrderAssignment, Double>> allCombinationScoreList = updatedScores.getUpdatedScoresAsList();
         ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
 
         Collections.sort(allCombinationScoreList, (o1, o2) -> o1.getValue().compareTo(o2.getValue()));

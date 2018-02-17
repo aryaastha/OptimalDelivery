@@ -8,6 +8,7 @@ import utils.LocationUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by astha.a on 13/02/18.
@@ -20,9 +21,9 @@ public class MinimumDistance implements IAttribute {
     }
 
 
-    public ArrayList<Pair<OrderAssignment, Double>> getNormalisedScore(ArrayList<Order> order, ArrayList<DeliveryExec> de) {
-        ArrayList<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
-        ArrayList<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
+    public List<Pair<OrderAssignment, Double>> getNormalisedScore(List<Order> order, List<DeliveryExec> de) {
+        List<OrderAssignment> everyPossibleCombination = new ArrayList<OrderAssignment>();
+        List<Pair<OrderAssignment, Double>> allCombinations = new ArrayList<Pair<OrderAssignment, Double>>();
         for (Order order1 : order) {
             for (DeliveryExec d : de) {
                 everyPossibleCombination.add(new OrderAssignment(order1, d));
@@ -38,7 +39,7 @@ public class MinimumDistance implements IAttribute {
         return allCombinations;
     }
 
-    private HashMap<OrderAssignment, Double> getNormalisedScore(ArrayList<OrderAssignment> assignments) {
+    private HashMap<OrderAssignment, Double> getNormalisedScore(List<OrderAssignment> assignments) {
 
         Double maxDistance = 0D;
         Double minDistance = Double.MAX_VALUE;

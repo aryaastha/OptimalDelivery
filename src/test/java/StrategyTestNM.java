@@ -8,12 +8,13 @@ import utils.GsonFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by astha.a on 17/02/18.
  */
 public class StrategyTestNM {
-    public ArrayList<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public List<OrderAssignment> runTest(String mappingParameters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(mappingParameters, JsonObject.class);
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
         ArrayList<Order> orders = new ArrayList<Order>();
@@ -33,7 +34,7 @@ public class StrategyTestNM {
         executives.add(new DeliveryExec(++t, new Location(24D, 28D), 17D));
 
 
-        ArrayList<OrderAssignment> mapping = myImplementation.getMapping(orders, executives);
+        List<OrderAssignment> mapping = myImplementation.getMapping(orders, executives);
         return mapping;
     }
 
@@ -110,7 +111,7 @@ public class StrategyTestNM {
                 "\t\"lastOrderDeliveryTime\": 1.0\n" +
                 "}", DeliveryExec.class);
 
-        ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
+        List<OrderAssignment> orderAssignmentsForDp = runTest(mappingForDp);
         HashMap<Order, DeliveryExec> expectedAnswerForDp = new HashMap<>();
 
         expectedAnswerForDp.put(order1, exec1);
@@ -188,7 +189,7 @@ public class StrategyTestNM {
                 "\t\"lastOrderDeliveryTime\": 2.0\n" +
                 "}", DeliveryExec.class);
 
-        ArrayList<OrderAssignment> orderAssignmentsForGreedy = runTest(mappingForGreedy);
+        List<OrderAssignment> orderAssignmentsForGreedy = runTest(mappingForGreedy);
 
         HashMap<Order, DeliveryExec> expectedAnswerForGreedy = new HashMap<>();
 
@@ -275,7 +276,7 @@ public class StrategyTestNM {
                 "\t\"lastOrderDeliveryTime\": 1.0\n" +
                 "}", DeliveryExec.class);
 
-        ArrayList<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
+        List<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
         HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
 
         expectedAnswerForLp.put(order1, exec1);

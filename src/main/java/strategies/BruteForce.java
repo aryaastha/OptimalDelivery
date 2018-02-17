@@ -3,7 +3,7 @@ package strategies;
 import beans.OrderAssignment;
 import utils.ScoreComputer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by astha.a on 14/02/18.
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class BruteForce implements IStrategy {
 
     @Override
-    public ArrayList<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
         //n! solution, hence not implementing
         return null;
     }
