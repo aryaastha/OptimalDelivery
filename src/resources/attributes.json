@@ -1,21 +1,21 @@
 {
   "implementation": "MyMapping",
-  "properties":{
+  "properties": {
     "attributes": [
       {
-        "name" : "DeLastOrderTime",
+        "name": "DeLastOrderTime",
         "properties": {
           "weight": 1
         }
       },
       {
-        "name" : "OrderTime",
+        "name": "OrderTime",
         "properties": {
           "weight": 3
         }
       },
       {
-        "name":"MinimumDistance",
+        "name": "MinimumDistance",
         "properties": {
           "weight": 2
         }

@@ -37,7 +37,7 @@ public class DpStrategy implements IStrategy {
 
         for (Integer mask = 0; mask < numberOfPerms; mask++) {
             Integer order = countSetBits(mask, N);
-            for (Integer exec = 0; exec < N && order < listOfOrders.size(); exec++) {
+            for (Integer exec = 0; exec < N && order < helper.getSize(); exec++) {
                 if (!checkIfSet(mask, exec)) {
                     Integer index = mask | (1 << exec);
                     if (dp[index] > (dp[mask] + cost[order][exec])) {
@@ -49,20 +49,6 @@ public class DpStrategy implements IStrategy {
         }
 
         int optimalMask = numberOfPerms - 1;
-        double min = Double.MAX_VALUE;
-        if (listOfExecs.size() == listOfOrders.size()) {
-            optimalMask = numberOfPerms - 1;
-        } else if (listOfExecs.size() > listOfOrders.size()) {
-            for (int i = 0; i < numberOfPerms; i++) {
-                Integer integer = countSetBits(i, N);
-                if (integer == listOfOrders.size()) {
-                    if (min > dp[i]) {
-                        min = dp[i];
-                        optimalMask = i;
-                    }
-                }
-            }
-        }
 
         Pair<OrderAssignment, Integer> optimalAssignmentMask;
 

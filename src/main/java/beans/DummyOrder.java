@@ -12,7 +12,6 @@ public class DummyOrder extends Order {
     }
 
     public static List<Order> getDummyOrders(int n) {
-        if (n > 0) return Collections.nCopies(n, new DummyOrder());
-        return Collections.emptyList();
+        return Collections.nCopies(n, new DummyOrder());
     }
 }

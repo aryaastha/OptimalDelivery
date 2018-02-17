@@ -25,69 +25,65 @@ public class LpStrategy implements IStrategy {
 
         double[][] cost = helper.getCostArray();
 
-        simplifyRows(cost, listOfOrders.size(), listOfExecs.size());
+        simplifyRows(cost, helper.getSize(), helper.getSize());
 
-        simplifyColumns(cost, listOfOrders.size(), listOfExecs.size());
+        simplifyColumns(cost, helper.getSize(), helper.getSize());
 
         Set<OrderAssignment> optimalAssignments = new HashSet<>();
 
-        while (optimalAssignments.size() != listOfOrders.size()) {
+        while (optimalAssignments.size() != helper.getSize()) {
             optimalAssignments.clear();
-            int[][] isTraversed = new int[listOfOrders.size()][listOfExecs.size()];
+            int[][] isTraversed = new int[helper.getSize()][helper.getSize()];
 
-            for (int i = 0; i < listOfOrders.size(); i++) {
-                for (int j = 0; j < listOfExecs.size(); j++) {
+            for (int i = 0; i < helper.getSize(); i++) {
+                for (int j = 0; j < helper.getSize(); j++) {
                     isTraversed[i][j] = 0;
                 }
             }
 
-            int countOfNumberOfZeroes = 1;
 
-            while (countOfNumberOfZeroes == 1) {
-
-
-                for (int i = 0; i < listOfOrders.size(); i++) {
-                    MutableInteger columnId = new MutableInteger(0);
-                    if (countZerosInRow(cost, listOfExecs.size(), i, columnId, isTraversed) == 1) {
-                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.getValue())));
-                        for (int j = 0; j < listOfOrders.size(); j++) {
-                            isTraversed[j][columnId.getValue()]++;
-                        }
+            for (int i = 0; i < helper.getSize(); i++) {
+                MutableInteger columnId = new MutableInteger(0);
+                if (countZerosInRow(cost, helper.getSize(), i, columnId, isTraversed) == 1) {
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.getValue())));
+                    for (int j = 0; j < helper.getSize(); j++) {
+                        isTraversed[j][columnId.getValue()]++;
                     }
-                }
-
-                for (int i = 0; i < listOfExecs.size(); i++) {
-                    MutableInteger rowId = new MutableInteger(0);
-                    if (countZerosInColumn(cost, listOfOrders.size(), i, rowId, isTraversed) == 1) {
-                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.getValue()), listOfExecs.get(i)));
-                        for (int j = 0; j < listOfExecs.size(); j++) {
-                            isTraversed[rowId.getValue()][j]++;
-                        }
-                    }
-
-                }
-
-                countOfNumberOfZeroes = 0;
-
-                for (int i = 0; i < listOfOrders.size(); i++) {
-                    countOfNumberOfZeroes += countZerosInRow(cost, listOfOrders.size(), i, new MutableInteger(0), isTraversed);
                 }
             }
 
-            if (countOfNumberOfZeroes > 1) {
-                for (int i = 0; i < listOfOrders.size(); i++) {
-                    for (int j = 0; j < listOfExecs.size(); j++) {
+            for (int i = 0; i < helper.getSize(); i++) {
+                MutableInteger rowId = new MutableInteger(0);
+                if (countZerosInColumn(cost, helper.getSize(), i, rowId, isTraversed) == 1) {
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.getValue()), listOfExecs.get(i)));
+                    for (int j = 0; j < helper.getSize(); j++) {
+                        isTraversed[rowId.getValue()][j]++;
+                    }
+                }
+
+            }
+
+            int countOfNumberOfZeroes = 0;
+
+            for (int i = 0; i < helper.getSize(); i++) {
+                countOfNumberOfZeroes += countZerosInRow(cost, helper.getSize(), i, new MutableInteger(0), isTraversed);
+            }
+
+
+            if (countOfNumberOfZeroes > 0) {
+                for (int i = 0; i < helper.getSize(); i++) {
+                    for (int j = 0; j < helper.getSize(); j++) {
                         if (cost[i][j] == 0 && isTraversed[i][j] == 0) {
                             optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-                            for (int o = 0; o < listOfOrders.size(); o++) {
+                            for (int o = 0; o < helper.getSize(); o++) {
                                 isTraversed[o][j]++;
                             }
-                            int k = j+1;
-                            int l = i+1;
-                            while (k < listOfExecs.size() && l < listOfOrders.size()) {
+                            int k = j + 1;
+                            int l = i + 1;
+                            while (k < helper.getSize() && l < helper.getSize()) {
                                 if (cost[l][k] == 0 && isTraversed[l][k] == 0) {
                                     optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
-                                    for (int o = 0; o < listOfOrders.size(); o++) {
+                                    for (int o = 0; o < helper.getSize(); o++) {
                                         isTraversed[o][k]++;
                                     }
                                 }
@@ -101,8 +97,8 @@ public class LpStrategy implements IStrategy {
             }
 
             double min = Integer.MAX_VALUE;
-            for (int i = 0; i < listOfOrders.size(); i++) {
-                for (int j = 0; j < listOfExecs.size(); j++) {
+            for (int i = 0; i < helper.getSize(); i++) {
+                for (int j = 0; j < helper.getSize(); j++) {
                     if (isTraversed[i][j] == 0 && min > cost[i][j]) {
                         min = cost[i][j];
                     }
@@ -110,8 +106,8 @@ public class LpStrategy implements IStrategy {
             }
 
 
-            for (int i = 0; i < listOfOrders.size(); i++) {
-                for (int j = 0; j < listOfExecs.size(); j++) {
+            for (int i = 0; i < helper.getSize(); i++) {
+                for (int j = 0; j < helper.getSize(); j++) {
                     if (isTraversed[i][j] > 1) {
                         cost[i][j] += min;
                     } else if (isTraversed[i][j] == 0) {
