@@ -18,6 +18,7 @@ public class DpStrategy implements IStrategy {
         Set<OrderAssignment> finalAssignment = new HashSet<>();
 
         AssignmentHelper helper = new AssignmentHelper(updatedScores);
+        Integer size = helper.getSize();
         List<Order> listOfOrders = helper.getOrders();
         List<DeliveryExec> listOfExecs = helper.getDeliveryExecs();
 
@@ -37,7 +38,7 @@ public class DpStrategy implements IStrategy {
 
         for (Integer mask = 0; mask < numberOfPerms; mask++) {
             Integer order = countSetBits(mask, N);
-            for (Integer exec = 0; exec < N && order < helper.getSize(); exec++) {
+            for (Integer exec = 0; exec < N && order < size; exec++) {
                 if (!checkIfSet(mask, exec)) {
                     Integer index = mask | (1 << exec);
                     if (dp[index] > (dp[mask] + cost[order][exec])) {
