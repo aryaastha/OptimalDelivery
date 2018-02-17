@@ -19,20 +19,8 @@ public class DpStrategy implements IStrategy {
 
         ArrayList<OrderAssignment> finalAssignment = new ArrayList<>();
 
-        ArrayList<Order> listOfOrders = new ArrayList<>();
-        ArrayList<DeliveryExec> listOfExecs = new ArrayList<>();
-
-        for (OrderAssignment entries : allCombinationScoreList.keySet()) {
-            Order order = entries.getOrder();
-            DeliveryExec deliveryExec = entries.getDeliveryExec();
-
-            if (!listOfExecs.contains(deliveryExec))
-                listOfExecs.add(deliveryExec);
-
-            if (!listOfOrders.contains(order))
-                listOfOrders.add(order);
-
-        }
+        ArrayList<Order> listOfOrders = updatedScores.getOrderList();
+        ArrayList<DeliveryExec> listOfExecs = updatedScores.getDeList();
 
         Integer N = listOfExecs.size();
 

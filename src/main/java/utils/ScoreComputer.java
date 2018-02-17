@@ -1,11 +1,11 @@
 package utils;
 
+import beans.DeliveryExec;
+import beans.Order;
 import beans.OrderAssignment;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by astha.a on 15/02/18.
@@ -35,5 +35,23 @@ public class ScoreComputer {
 
     public HashMap<OrderAssignment, Double> getScores() {
         return scores;
+    }
+
+    public ArrayList<Order> getOrderList(){
+        Set<Order> orders = new HashSet<>();
+        ArrayList<Order> listOfOrders = new ArrayList<>();
+        Set<OrderAssignment> orderAssignments = scores.keySet();
+        orderAssignments.forEach(orderAssignment -> orders.add(orderAssignment.getOrder()));
+        listOfOrders.addAll(orders);
+        return listOfOrders;
+    }
+
+    public ArrayList<DeliveryExec> getDeList(){
+        Set<DeliveryExec> deliveryExecs = new HashSet<>();
+        ArrayList<DeliveryExec> listOfDe = new ArrayList<>();
+        Set<OrderAssignment> orderAssignments = scores.keySet();
+        orderAssignments.forEach(orderAssignment -> deliveryExecs.add(orderAssignment.getDeliveryExec()));
+        listOfDe.addAll(deliveryExecs);
+        return listOfDe;
     }
 }

@@ -276,14 +276,15 @@ public class StrategyTest {
                 "\t\"lastOrderDeliveryTime\": 1.0\n" +
                 "}", DeliveryExec.class);
 
-        ArrayList<OrderAssignment> orderAssignmentsForDp = runTest(mappingForLp);
+        ArrayList<OrderAssignment> orderAssignmentsForLp = runTest(mappingForLp);
         HashMap<Order, DeliveryExec> expectedAnswerForLp = new HashMap<>();
 
         expectedAnswerForLp.put(order1,exec1);
         expectedAnswerForLp.put(order3,exec3);
         expectedAnswerForLp.put(order2,exec2);
 
-        for (OrderAssignment assign : orderAssignmentsForDp){
+        for (OrderAssignment assign : orderAssignmentsForLp){
+//            System.out.println(assign);
             assertEquals(expectedAnswerForLp.get(assign.getOrder()),assign.getDeliveryExec());
         }
     }
