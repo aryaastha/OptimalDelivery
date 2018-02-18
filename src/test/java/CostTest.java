@@ -23,7 +23,7 @@ public class CostTest extends StrategyTest {
         List<DeliveryExec> execs = ListGenerator.getList(DeliveryExec.class, 4);
 
         double[][] cost = {
-                {11.508636,11.508636, 11.0, 11.5105},
+                {11.508636, 11.508636, 11.0, 11.5105},
                 {10.462922, 10.462922, 10.0, 10.476133},
                 {3.0, 3.0, 3.0, 3.0},
                 {6.0, 6.0, 6.16246, 6.459075}
@@ -39,6 +39,8 @@ public class CostTest extends StrategyTest {
                 computer.updateScores(objects, 1D);
             }
         }
-        results = ImmutableMap.of(DpStrategy.class,30.462, LpStrategy.class,30.462, GreedyStrategy.class,30.5105);
+        results = ImmutableMap.of(DpStrategy.class, 30.462,
+                LpStrategy.class, 30.462,
+                GreedyStrategy.class, 30.5105);
     }
 }

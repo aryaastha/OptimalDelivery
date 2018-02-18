@@ -41,7 +41,9 @@ public class StrategyNMTest extends StrategyTest {
             computer.updateScores(attributeScore, attribute.getWeight());
         }
 
-        results = ImmutableMap.of(DpStrategy.class, 27.378, LpStrategy.class, 27.378, GreedyStrategy.class, 28.264);
+        results = ImmutableMap.of(DpStrategy.class, 27.378,
+                LpStrategy.class, 27.378,
+                GreedyStrategy.class, 28.264);
 
     }
 

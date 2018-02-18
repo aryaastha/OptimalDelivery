@@ -51,7 +51,9 @@ public class StrategyTest {
             computer.updateScores(attributeScore, attribute.getWeight());
         }
 
-        results = ImmutableMap.of(DpStrategy.class,46.611,LpStrategy.class,46.611,GreedyStrategy.class,46.656);
+        results = ImmutableMap.of(DpStrategy.class, 46.611,
+                LpStrategy.class, 46.611,
+                GreedyStrategy.class, 46.656);
 
     }
 
@@ -59,24 +61,21 @@ public class StrategyTest {
     public void testDp() throws Exception {
         IStrategy strategy = new DpStrategy();
         List<OrderAssignment> finalAssignment = strategy.getFinalAssignment(computer);
-        System.out.println(calculateCosts(finalAssignment));
-        Assert.assertEquals(results.get(strategy.getClass()),calculateCosts(finalAssignment),DELTA);
+        Assert.assertEquals(results.get(strategy.getClass()), calculateCosts(finalAssignment), DELTA);
     }
 
     @Test
     public void testLp() throws Exception {
         IStrategy strategy = new LpStrategy();
         List<OrderAssignment> finalAssignment = strategy.getFinalAssignment(computer);
-        System.out.println(calculateCosts(finalAssignment));
-        Assert.assertEquals(results.get(strategy.getClass()),calculateCosts(finalAssignment),DELTA);
+        Assert.assertEquals(results.get(strategy.getClass()), calculateCosts(finalAssignment), DELTA);
     }
 
     @Test
     public void testGreedy() throws Exception {
         IStrategy strategy = new GreedyStrategy();
         List<OrderAssignment> finalAssignment = strategy.getFinalAssignment(computer);
-        System.out.println(calculateCosts(finalAssignment));
-        Assert.assertEquals(results.get(strategy.getClass()),calculateCosts(finalAssignment),DELTA);
+        Assert.assertEquals(results.get(strategy.getClass()), calculateCosts(finalAssignment), DELTA);
     }
 
     private Double calculateCosts(List<OrderAssignment> finalAssignment) {
