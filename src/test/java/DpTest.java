@@ -28,8 +28,8 @@ public class DpTest {
 
         List<DeliveryExec> listOfExecs = new ArrayList<DeliveryExec>();
 
-        listOfExecs.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         listOfExecs.add(new DeliveryExec(++t,new Location(6D,8D),5D));
+        listOfExecs.add(new DeliveryExec(++t,new Location(4D,1D),2D));
         listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
         listOfExecs.add(new DeliveryExec(++t,new Location(9D,10D),3D));
 
@@ -38,7 +38,7 @@ public class DpTest {
 
     @Test
     public void testDp() throws Exception {
-        String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes3.json");
+        String mappingForDp = FileUtils.readFromFile("src/test/resources/attributes.json");
 
         Order order1 = GsonFactory.getInstance().getGson().fromJson(" {\n" +
                 " \t\"orderId\": 2,\n" +
