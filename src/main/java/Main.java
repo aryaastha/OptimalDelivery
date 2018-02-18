@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        String attributesString = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/resources/attributes.json");
+        String attributesString = FileUtils.readFromFile("src/resources/attributes.json");
         JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(attributesString, JsonObject.class);
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
         List<Order> orders = new ArrayList<Order>();
