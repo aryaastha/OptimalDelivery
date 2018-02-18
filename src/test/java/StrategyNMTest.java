@@ -16,25 +16,21 @@ import java.util.List;
 /**
  * Created by astha.a on 17/02/18.
  */
-public class StrategyNMTest extends StrategyTest{
+public class StrategyNMTest extends StrategyTest {
     @BeforeClass
     public static void setUp() throws Exception {
         ArrayList<Order> orders = new ArrayList<Order>();
-
-
 
         orders.add(new Order(new Restaurant(new Location(2D, 5D)), 9D));
         orders.add(new Order(new Restaurant(new Location(2D, 4D)), 7D));
         orders.add(new Order(new Restaurant(new Location(1D, 4D)), 6D));
         orders.add(new Order(new Restaurant(new Location(4D, 1D)), 8D));
 
-
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
         executives.add(new DeliveryExec(new Location(4D, 1D), 2D));
         executives.add(new DeliveryExec(new Location(6D, 8D), 5D));
         executives.add(new DeliveryExec(new Location(9D, 10D), 3D));
-
 
         computer = new ScoreComputer();
 
@@ -45,10 +41,7 @@ public class StrategyNMTest extends StrategyTest{
             computer.updateScores(attributeScore, attribute.getWeight());
         }
 
-
-
-        results = ImmutableMap.of(DpStrategy.class,27.378, LpStrategy.class,27.378, GreedyStrategy.class,28.264);
-
+        results = ImmutableMap.of(DpStrategy.class, 27.378, LpStrategy.class, 27.378, GreedyStrategy.class, 28.264);
 
     }
 

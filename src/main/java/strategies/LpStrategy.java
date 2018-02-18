@@ -16,13 +16,20 @@ import java.util.Set;
  * Created by astha.a on 16/02/18.
  */
 public class LpStrategy implements IStrategy {
+    private double[][] cost;
+    private int[][] linesArray;
+    private Integer size;
+    private List<Order> listOfOrders;
+    private List<DeliveryExec> listOfExecs;
+
+
     @Override
     public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
         AssignmentHelper helper = new AssignmentHelper(updatedScores);
-        List<Order> listOfOrders = helper.getOrders();
-        List<DeliveryExec> listOfExecs = helper.getDeliveryExecs();
-        Integer size = helper.getSize();
-        double[][] cost = helper.getCostArray();
+        listOfOrders = helper.getOrders();
+        listOfExecs = helper.getDeliveryExecs();
+        size = helper.getSize();
+        cost = helper.getCostArray();
 
         simplifyRows(cost, size, size);
 
@@ -32,77 +39,20 @@ public class LpStrategy implements IStrategy {
 
         while (optimalAssignments.size() != size) {
             optimalAssignments.clear();
-            int[][] isTraversed = new int[size][size];
-            for (int[] i : isTraversed)
+            linesArray = new int[size][size];
+            for (int[] i : linesArray)
                 Arrays.fill(i, 0);
 
-            int oldValue;
+            drawMinimalLines(optimalAssignments);
 
-            do {
-                oldValue = optimalAssignments.size();
-
-                for (int i = 0; i < size; i++) {
-                    MutableInt columnId = new MutableInt(0);
-                    if (countZerosInRow(cost, size, i, columnId, isTraversed) == 1) {
-                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
-                        for (int j = 0; j < size; j++) {
-                            isTraversed[j][columnId.intValue()]++;
-                        }
-                    }
-                }
-
-                for (int i = 0; i < size; i++) {
-                    MutableInt rowId = new MutableInt(0);
-                    if (countZerosInColumn(cost, size, i, rowId, isTraversed) == 1) {
-                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
-                        for (int j = 0; j < size; j++) {
-                            isTraversed[rowId.intValue()][j]++;
-                        }
-                    }
-
-                }
-            } while (oldValue != optimalAssignments.size());
-
-            int countOfNumberOfZeroes = 0;
-
-            for (int i = 0; i < size; i++) {
-                countOfNumberOfZeroes += countZerosInRow(cost, size, i, new MutableInt(0), isTraversed);
-            }
-
-
-            if (countOfNumberOfZeroes > 0) {
-                for (int i = 0; i < size; i++) {
-                    for (int j = 0; j < size; j++) {
-                        if (cost[i][j] == 0 && isTraversed[i][j] == 0) {
-                            optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
-                            for (int o = 0; o < size; o++) {
-                                isTraversed[o][j]++;
-                            }
-                            int k = j + 1;
-                            int l = i + 1;
-                            while (k < size && l < size) {
-                                if (cost[l][k] == 0 && isTraversed[l][k] == 0) {
-                                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
-                                    for (int o = 0; o < size; o++) {
-                                        isTraversed[o][k]++;
-                                    }
-                                }
-                                k++;
-                                l++;
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            introduceZeroes(cost, isTraversed, size);
+            introduceZeroes();
         }
 
         return helper.filterDummies(optimalAssignments);
     }
 
-    public static void simplifyRows(double[][] cost, int rows, int columns) {
+
+    private void simplifyRows(double[][] cost, int rows, int columns) {
         for (int i = 0; i < rows; i++) {
             double min = Double.MAX_VALUE;
             for (int j = 0; j < columns; j++) {
@@ -116,7 +66,7 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    public static void simplifyColumns(double[][] cost, int rows, int columns) {
+    private void simplifyColumns(double[][] cost, int rows, int columns) {
         for (int i = 0; i < columns; i++) {
             double min = Double.MAX_VALUE;
             for (int j = 0; j < rows; j++) {
@@ -130,11 +80,11 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    public static int countZerosInRow(double[][] cost, int columns, int rowId, MutableInt col, int[][] isTraversed) {
+    private int countZerosInRow(int rowId, MutableInt col) {
         int count = 0;
 
-        for (int i = 0; i < columns; i++) {
-            if (isTraversed[rowId][i] == 0 && cost[rowId][i] == 0) {
+        for (int i = 0; i < size; i++) {
+            if (linesArray[rowId][i] == 0 && cost[rowId][i] == 0) {
                 col.setValue(i);
                 count++;
             }
@@ -143,11 +93,11 @@ public class LpStrategy implements IStrategy {
         return count;
     }
 
-    public static void introduceZeroes(double[][] cost, int[][] isTraversed, Integer size){
+    private void introduceZeroes() {
         double min = Integer.MAX_VALUE;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (isTraversed[i][j] == 0 && min > cost[i][j]) {
+                if (linesArray[i][j] == 0 && min > cost[i][j]) {
                     min = cost[i][j];
                 }
             }
@@ -156,24 +106,89 @@ public class LpStrategy implements IStrategy {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (isTraversed[i][j] > 1) {
+                if (linesArray[i][j] > 1) {
                     cost[i][j] += min;
-                } else if (isTraversed[i][j] == 0) {
+                } else if (linesArray[i][j] == 0) {
                     cost[i][j] -= min;
                 }
             }
         }
     }
 
-    public static int countZerosInColumn(double[][] cost, int rows, int colId, MutableInt row, int[][] isTraversed) {
+    private int countZerosInColumn(int colId, MutableInt row) {
         int count = 0;
-        for (int i = 0; i < rows; i++) {
-            if (isTraversed[i][colId] == 0 && cost[i][colId] == 0) {
+        for (int i = 0; i < size; i++) {
+            if (linesArray[i][colId] == 0 && cost[i][colId] == 0) {
                 count++;
 
                 row.setValue(i);
             }
         }
         return count;
+    }
+
+    private void drawMinimalLines(Set<OrderAssignment> optimalAssignments) {
+        int oldValue;
+        do {
+            oldValue = optimalAssignments.size();
+
+            for (int i = 0; i < size; i++) {
+                MutableInt columnId = new MutableInt(0);
+                if (countZerosInRow(i, columnId) == 1) {
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
+                    drawVerticalLine(columnId.intValue());
+                }
+            }
+
+            for (int i = 0; i < size; i++) {
+                MutableInt rowId = new MutableInt(0);
+                if (countZerosInColumn(i, rowId) == 1) {
+                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
+                    drawHorizontalLine(rowId.intValue());
+                }
+
+            }
+        } while (oldValue != optimalAssignments.size());
+
+        int countOfNumberOfZeroes = 0;
+
+        for (int i = 0; i < size; i++) {
+            countOfNumberOfZeroes += countZerosInRow(i, new MutableInt(0));
+        }
+
+
+        if (countOfNumberOfZeroes > 0) {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (cost[i][j] == 0 && linesArray[i][j] == 0) {
+                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+                        drawVerticalLine(j);
+                        int k = j + 1;
+                        int l = i + 1;
+                        while (k < size && l < size) {
+                            if (cost[l][k] == 0 && linesArray[l][k] == 0) {
+                                optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
+                                drawVerticalLine(k);
+                            }
+                            k++;
+                            l++;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void drawHorizontalLine(int rowid){
+        for(int i = 0; i < size; i++){
+            linesArray[rowid][i]++;
+        }
+    }
+
+    private void drawVerticalLine(int columnId){
+        for(int i = 0; i < size; i++){
+            linesArray[i][columnId]++;
+        }
     }
 }
