@@ -10,5 +10,5 @@ import java.util.List;
  * Created by astha.a on 12/02/18.
  */
 public interface Mapping {
-    public List<OrderAssignment> getMapping(List<Order> orders, List<DeliveryExec> deliveryExec);
+    public List<OrderAssignment> getMapping(List<Order> orders, List<DeliveryExec> deliveryExec) throws Exception;
 }

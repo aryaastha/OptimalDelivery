@@ -1,8 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by astha.a on 08/02/18.
  */
@@ -64,12 +61,4 @@ public class Order {
                 '}';
     }
 
-    //for testClasses
-    public static List<Order> getDummyList(int n){
-        List<Order> dummyList = new ArrayList<>();
-        for (int i = 0; i < n ; i++){
-            dummyList.add(new Order());
-        }
-        return dummyList;
-    }
 }

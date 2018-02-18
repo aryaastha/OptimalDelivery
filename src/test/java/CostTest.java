@@ -1,10 +1,13 @@
-import beans.*;
+import beans.DeliveryExec;
+import beans.Order;
+import beans.OrderAssignment;
 import com.google.common.collect.ImmutableMap;
 import javafx.util.Pair;
 import org.junit.BeforeClass;
 import strategies.DpStrategy;
 import strategies.GreedyStrategy;
 import strategies.LpStrategy;
+import utils.ListGenerator;
 import utils.ScoreComputer;
 
 import java.util.ArrayList;
@@ -15,9 +18,9 @@ import java.util.List;
  */
 public class CostTest extends StrategyTest {
     @BeforeClass
-    public static void setUp() {
-        List<Order> orders = Order.getDummyList(4);
-        List<DeliveryExec> execs = DeliveryExec.getDummyList(4);
+    public static void setUp() throws Exception {
+        List<Order> orders = ListGenerator.getList(Order.class, 4);
+        List<DeliveryExec> execs = ListGenerator.getList(DeliveryExec.class, 4);
 
         double[][] cost = {
                 {11.508636,11.508636, 11.0, 11.5105},

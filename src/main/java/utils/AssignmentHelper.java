@@ -5,9 +5,6 @@ import beans.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static beans.DummyDE.getDummyDeliveryExecs;
-import static beans.DummyOrder.getDummyOrders;
-
 /**
  * Created by astha.a on 17/02/18.
  */
@@ -17,7 +14,7 @@ public class AssignmentHelper {
     private List<DeliveryExec> deliveryExecs;
     private Integer size;
 
-    public AssignmentHelper(ScoreComputer computer) {
+    public AssignmentHelper(ScoreComputer computer) throws Exception {
         this.computer = computer;
         this.orders = new ArrayList<>(computer.getOrderList());
         this.deliveryExecs = new ArrayList<>(computer.getDeList());
@@ -25,9 +22,9 @@ public class AssignmentHelper {
         balance();
     }
 
-    private void balance(){
-        orders.addAll(getDummyOrders(size- orders.size()));
-        deliveryExecs.addAll(getDummyDeliveryExecs(size - deliveryExecs.size()));
+    private void balance() throws Exception {
+        orders.addAll(ListGenerator.getList(DummyOrder.class,size- orders.size()));
+        deliveryExecs.addAll(ListGenerator.getList(DummyDE.class, size - deliveryExecs.size()));
     }
 
     public List<Order> getOrders() {

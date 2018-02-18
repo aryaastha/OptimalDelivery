@@ -4,7 +4,6 @@ import mappings.Mapping;
 import utils.FileUtils;
 import utils.GsonFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * Created by astha.a on 16/02/18.
  */
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         String attributesString = FileUtils.readFromFile("/Users/astha.a/work/TestCode/src/resources/attributes.json");
         JsonObject jsonObject = GsonFactory.getInstance().getGson().fromJson(attributesString, JsonObject.class);
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);

@@ -19,15 +19,15 @@ public class LpStrategy implements IStrategy {
     private double[][] cost;
     private int[][] linesArray;
     private Integer size;
-    private List<Order> listOfOrders;
-    private List<DeliveryExec> listOfExecs;
+    private List<Order> orders;
+    private List<DeliveryExec> executives;
 
 
     @Override
-    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) throws Exception {
         AssignmentHelper helper = new AssignmentHelper(updatedScores);
-        listOfOrders = helper.getOrders();
-        listOfExecs = helper.getDeliveryExecs();
+        orders = helper.getOrders();
+        executives = helper.getDeliveryExecs();
         size = helper.getSize();
         cost = helper.getCostArray();
 
@@ -135,7 +135,7 @@ public class LpStrategy implements IStrategy {
             for (int i = 0; i < size; i++) {
                 MutableInt columnId = new MutableInt(0);
                 if (countZerosInRow(i, columnId) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
+                    optimalAssignments.add(new OrderAssignment(orders.get(i), executives.get(columnId.intValue())));
                     drawVerticalLine(columnId.intValue());
                 }
             }
@@ -143,7 +143,7 @@ public class LpStrategy implements IStrategy {
             for (int i = 0; i < size; i++) {
                 MutableInt rowId = new MutableInt(0);
                 if (countZerosInColumn(i, rowId) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
+                    optimalAssignments.add(new OrderAssignment(orders.get(rowId.intValue()), executives.get(i)));
                     drawHorizontalLine(rowId.intValue());
                 }
 
@@ -161,13 +161,13 @@ public class LpStrategy implements IStrategy {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if (cost[i][j] == 0 && linesArray[i][j] == 0) {
-                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
+                        optimalAssignments.add(new OrderAssignment(orders.get(i), executives.get(j)));
                         drawVerticalLine(j);
                         int k = j + 1;
                         int l = i + 1;
                         while (k < size && l < size) {
                             if (cost[l][k] == 0 && linesArray[l][k] == 0) {
-                                optimalAssignments.add(new OrderAssignment(listOfOrders.get(l), listOfExecs.get(k)));
+                                optimalAssignments.add(new OrderAssignment(orders.get(l), executives.get(k)));
                                 drawVerticalLine(k);
                             }
                             k++;
@@ -180,14 +180,14 @@ public class LpStrategy implements IStrategy {
         }
     }
 
-    private void drawHorizontalLine(int rowid){
-        for(int i = 0; i < size; i++){
+    private void drawHorizontalLine(int rowid) {
+        for (int i = 0; i < size; i++) {
             linesArray[rowid][i]++;
         }
     }
 
-    private void drawVerticalLine(int columnId){
-        for(int i = 0; i < size; i++){
+    private void drawVerticalLine(int columnId) {
+        for (int i = 0; i < size; i++) {
             linesArray[i][columnId]++;
         }
     }

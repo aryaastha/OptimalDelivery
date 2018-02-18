@@ -17,7 +17,7 @@ public class MyMapping implements Mapping {
     private List<IAttribute> attributes;
     private IStrategy strategy;
 
-    public List<OrderAssignment> getMapping(List<Order> orders, List<DeliveryExec> deliveryExec) {
+    public List<OrderAssignment> getMapping(List<Order> orders, List<DeliveryExec> deliveryExec) throws Exception {
         ScoreComputer scoreComputer = new ScoreComputer();
         for (IAttribute attribute : attributes) {
             List<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, deliveryExec);

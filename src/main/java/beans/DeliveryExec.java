@@ -1,8 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by astha.a on 08/02/18.
  */
@@ -67,14 +64,5 @@ public class DeliveryExec {
         result = 31 * result + getCurrentLocation().hashCode();
         result = 31 * result + getLastOrderDeliveryTime().hashCode();
         return result;
-    }
-
-    //For Test Classes
-    public static List<DeliveryExec> getDummyList(int n ){
-        List<DeliveryExec> dummyList = new ArrayList<>();
-        for(int i = 0; i < n ; i++){
-            dummyList.add(new DeliveryExec());
-        }
-        return dummyList;
     }
 }

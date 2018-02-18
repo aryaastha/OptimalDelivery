@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class DpStrategy implements IStrategy {
     @Override
-    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) {
+    public List<OrderAssignment> getFinalAssignment(ScoreComputer updatedScores) throws Exception {
         Set<OrderAssignment> finalAssignment = new HashSet<>();
 
         AssignmentHelper helper = new AssignmentHelper(updatedScores);
