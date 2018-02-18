@@ -36,26 +36,32 @@ public class LpStrategy implements IStrategy {
             for (int[] i : isTraversed)
                 Arrays.fill(i, 0);
 
-            for (int i = 0; i < size; i++) {
-                MutableInt columnId = new MutableInt(0);
-                if (countZerosInRow(cost, size, i, columnId, isTraversed) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
-                    for (int j = 0; j < size; j++) {
-                        isTraversed[j][columnId.intValue()]++;
-                    }
-                }
-            }
+            int oldValue;
 
-            for (int i = 0; i < size; i++) {
-                MutableInt rowId = new MutableInt(0);
-                if (countZerosInColumn(cost, size, i, rowId, isTraversed) == 1) {
-                    optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
-                    for (int j = 0; j < size; j++) {
-                        isTraversed[rowId.intValue()][j]++;
+            do {
+                oldValue = optimalAssignments.size();
+
+                for (int i = 0; i < size; i++) {
+                    MutableInt columnId = new MutableInt(0);
+                    if (countZerosInRow(cost, size, i, columnId, isTraversed) == 1) {
+                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(columnId.intValue())));
+                        for (int j = 0; j < size; j++) {
+                            isTraversed[j][columnId.intValue()]++;
+                        }
                     }
                 }
 
-            }
+                for (int i = 0; i < size; i++) {
+                    MutableInt rowId = new MutableInt(0);
+                    if (countZerosInColumn(cost, size, i, rowId, isTraversed) == 1) {
+                        optimalAssignments.add(new OrderAssignment(listOfOrders.get(rowId.intValue()), listOfExecs.get(i)));
+                        for (int j = 0; j < size; j++) {
+                            isTraversed[rowId.intValue()][j]++;
+                        }
+                    }
+
+                }
+            }while (oldValue!=optimalAssignments.size());
 
             int countOfNumberOfZeroes = 0;
 
@@ -71,7 +77,6 @@ public class LpStrategy implements IStrategy {
                             optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
                             for (int o = 0; o < size; o++) {
                                 isTraversed[o][j]++;
-                                isTraversed[i][o]++;
                             }
                             int k = j + 1;
                             int l = i + 1;

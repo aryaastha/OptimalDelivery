@@ -18,7 +18,6 @@ public class Main {
         Mapping myImplementation = GsonFactory.getInstance().getGson().fromJson(jsonObject, Mapping.class);
         List<Order> orders = new ArrayList<Order>();
 
-
         int t = 0;
 
         orders.add(new Order(++t,new Restaurant(new Location(2D,5D)),9D));
