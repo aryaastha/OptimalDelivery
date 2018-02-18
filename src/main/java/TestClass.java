@@ -1,6 +1,6 @@
 import beans.*;
 import javafx.util.Pair;
-import strategies.GreedyStrategy;
+import strategies.DpStrategy;
 import strategies.IStrategy;
 import utils.ScoreComputer;
 
@@ -62,7 +62,7 @@ public class TestClass {
             }
         }
 
-        IStrategy strategy = new GreedyStrategy();
+        IStrategy strategy = new DpStrategy();
         List<OrderAssignment> finalAssignment = strategy.getFinalAssignment(computer);
 
         finalAssignment.forEach(System.out::println);

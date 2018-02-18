@@ -36,7 +36,6 @@ public class LpStrategy implements IStrategy {
             for (int[] i : isTraversed)
                 Arrays.fill(i, 0);
 
-
             for (int i = 0; i < size; i++) {
                 MutableInt columnId = new MutableInt(0);
                 if (countZerosInRow(cost, size, i, columnId, isTraversed) == 1) {
@@ -72,6 +71,7 @@ public class LpStrategy implements IStrategy {
                             optimalAssignments.add(new OrderAssignment(listOfOrders.get(i), listOfExecs.get(j)));
                             for (int o = 0; o < size; o++) {
                                 isTraversed[o][j]++;
+                                isTraversed[i][o]++;
                             }
                             int k = j + 1;
                             int l = i + 1;
@@ -90,6 +90,7 @@ public class LpStrategy implements IStrategy {
                     }
                 }
             }
+
 
             double min = Integer.MAX_VALUE;
             for (int i = 0; i < size; i++) {
@@ -111,6 +112,7 @@ public class LpStrategy implements IStrategy {
                 }
             }
         }
+
         return helper.filterDummies(optimalAssignments);
     }
 
