@@ -1,17 +1,17 @@
 package beans;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by astha.a on 17/02/18.
  */
 public class DummyOrder extends Order {
-    public DummyOrder() {
-        super(0, new Restaurant(new Location(0D, 0D)), 0D);
-    }
-
     public static List<Order> getDummyOrders(int n) {
-        return Collections.nCopies(n, new DummyOrder());
+        List<Order> dummyList = new ArrayList<>(n);
+        for (int i = 0; i < n; i++){
+            dummyList.add(new Order());
+        }
+        return dummyList;
     }
 }

@@ -22,19 +22,19 @@ public class StrategyNMTest extends StrategyTest{
         ArrayList<Order> orders = new ArrayList<Order>();
 
 
-        int t = 0;
 
-        orders.add(new Order(++t, new Restaurant(new Location(2D, 5D)), 9D));
-        orders.add(new Order(++t, new Restaurant(new Location(2D, 4D)), 7D));
-        orders.add(new Order(++t, new Restaurant(new Location(1D, 4D)), 6D));
-        orders.add(new Order(++t, new Restaurant(new Location(4D, 1D)), 8D));
+        orders.add(new Order(new Restaurant(new Location(2D, 5D)), 9D));
+        orders.add(new Order(new Restaurant(new Location(2D, 4D)), 7D));
+        orders.add(new Order(new Restaurant(new Location(1D, 4D)), 6D));
+        orders.add(new Order(new Restaurant(new Location(4D, 1D)), 8D));
+        orders.add(new Order(new Restaurant(new Location(1D, 2D)), 8D));
 
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
 
-        executives.add(new DeliveryExec(++t, new Location(4D, 1D), 2D));
-        executives.add(new DeliveryExec(++t, new Location(6D, 8D), 5D));
-        executives.add(new DeliveryExec(++t, new Location(9D, 10D), 3D));
+        executives.add(new DeliveryExec(new Location(4D, 1D), 2D));
+        executives.add(new DeliveryExec(new Location(6D, 8D), 5D));
+        executives.add(new DeliveryExec(new Location(9D, 10D), 3D));
 
 
         computer = new ScoreComputer();
@@ -45,6 +45,7 @@ public class StrategyNMTest extends StrategyTest{
             List<Pair<OrderAssignment, Double>> attributeScore = attribute.getNormalisedScore(orders, executives);
             computer.updateScores(attributeScore, attribute.getWeight());
         }
+
 
 
         results = ImmutableMap.of(DpStrategy.class,27.378, LpStrategy.class,27.378, GreedyStrategy.class,28.264);

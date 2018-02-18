@@ -16,14 +16,14 @@ import java.util.List;
 public class CostTest extends StrategyTest {
     @BeforeClass
     public static void setUp() {
-        List<Order> orders = DummyOrder.getDummyOrders(4);
-        List<DeliveryExec> execs = DummyDE.getDummyDeliveryExecs(4);
+        List<Order> orders = Order.getDummyList(4);
+        List<DeliveryExec> execs = DeliveryExec.getDummyList(4);
 
         double[][] cost = {
-                {0.508636, 0.508636, 0.0, 0.5105},
-                {0.462922, 0.462922, 0.0, 0.476133},
-                {0.0, 0.0, 0.0, 0.0},
-                {0.0, 0.0, 0.16246, 0.459075}
+                {11.508636,11.508636, 11.0, 11.5105},
+                {10.462922, 10.462922, 10.0, 10.476133},
+                {3.0, 3.0, 3.0, 3.0},
+                {6.0, 6.0, 6.16246, 6.459075}
         };
 
         computer = new ScoreComputer();
@@ -36,6 +36,6 @@ public class CostTest extends StrategyTest {
                 computer.updateScores(objects, 1D);
             }
         }
-        results = ImmutableMap.of(DpStrategy.class,0.0, LpStrategy.class,0.0, GreedyStrategy.class,3.551);
+        results = ImmutableMap.of(DpStrategy.class,30.462, LpStrategy.class,30.462, GreedyStrategy.class,30.5105);
     }
 }

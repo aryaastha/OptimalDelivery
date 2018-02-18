@@ -61,7 +61,7 @@ public class LpStrategy implements IStrategy {
                     }
 
                 }
-            }while (oldValue!=optimalAssignments.size());
+            } while (oldValue != optimalAssignments.size());
 
             int countOfNumberOfZeroes = 0;
 

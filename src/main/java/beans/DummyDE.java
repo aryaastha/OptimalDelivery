@@ -1,17 +1,17 @@
 package beans;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by astha.a on 17/02/18.
  */
 public class DummyDE extends DeliveryExec {
-    public DummyDE() {
-        super(0, new Location(0D, 0D), 0D);
-    }
-
     public static List<DeliveryExec> getDummyDeliveryExecs(int n) {
-        return Collections.nCopies(n, new DummyDE());
+        List<DeliveryExec> dummyList = new ArrayList<>(n);
+        for (int i = 0; i < n; i++){
+            dummyList.add(new DummyDE());
+        }
+        return dummyList;
     }
 }

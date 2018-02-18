@@ -1,25 +1,32 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by astha.a on 08/02/18.
  */
 public class DeliveryExec {
 
 
-    private int id;
+    private Integer id;
     private Location currentLocation;
     private Double lastOrderDeliveryTime;
 
-    public DeliveryExec(int id, Location currentLocation, Double lastOrderDeliveryTime) {
-        this.id = id;
+    private static int randomId = 1;
+
+    public DeliveryExec(Location currentLocation, Double lastOrderDeliveryTime) {
+        this.id = randomId++;
         this.currentLocation = currentLocation;
         this.lastOrderDeliveryTime = lastOrderDeliveryTime;
     }
 
-    public DeliveryExec() {}
+    public DeliveryExec() {
+        this(new Location(0D, 0D), 0D);
+    }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -38,8 +45,6 @@ public class DeliveryExec {
     public String toString() {
         return "DeliveryExec{" +
                 "id=" + id +
-                ", currentLocation=" + currentLocation +
-                ", lastOrderDeliveryTime=" + lastOrderDeliveryTime +
                 '}';
     }
 
@@ -62,5 +67,13 @@ public class DeliveryExec {
         result = 31 * result + getCurrentLocation().hashCode();
         result = 31 * result + getLastOrderDeliveryTime().hashCode();
         return result;
+    }
+
+    public static List<DeliveryExec> getDummyList(int n ){
+        List<DeliveryExec> dummyList = new ArrayList<>();
+        for(int i = 0; i < n ; i++){
+            dummyList.add(new DeliveryExec());
+        }
+        return dummyList;
     }
 }

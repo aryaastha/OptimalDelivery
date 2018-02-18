@@ -49,7 +49,9 @@ public class AssignmentHelper {
                 if (scores.containsKey(new OrderAssignment(orders.get(i), deliveryExecs.get(j)))) {
                     cost[i][j] = scores.get(new OrderAssignment(orders.get(i), deliveryExecs.get(j)));
                 }
+                System.out.print(cost[i][j] + " ");
             }
+            System.out.println();
         }
         return cost;
     }

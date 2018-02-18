@@ -1,5 +1,8 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by astha.a on 08/02/18.
  */
@@ -7,14 +10,19 @@ public class Order {
     private Integer orderId;
     private Restaurant restaurant;
     private Double orderedTime;
+    private static int randomId = 1;
 
-    public Order(Integer orderId, Restaurant res, Double orderedTime) {
-        this.orderId = orderId;
+
+
+    public Order(Restaurant res, Double orderedTime) {
+        this.orderId = randomId++;
         this.restaurant = res;
         this.orderedTime = orderedTime;
     }
 
-    public Order() {}
+    public Order() {
+        this(new Restaurant(new Location(0D, 0D)), 0D);
+    }
 
     public Restaurant getRestaurant() {
         return restaurant;
@@ -53,8 +61,14 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "orderId=" + orderId +
-                ", restaurant=" + restaurant +
-                ", orderedTime=" + orderedTime +
                 '}';
+    }
+
+    public static List<Order> getDummyList(int n){
+        List<Order> dummyList = new ArrayList<>();
+        for (int i = 0; i < n ; i++){
+            dummyList.add(new Order());
+        }
+        return dummyList;
     }
 }
