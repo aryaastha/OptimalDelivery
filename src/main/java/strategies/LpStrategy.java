@@ -30,6 +30,7 @@ public class LpStrategy implements IStrategy {
         executives = helper.getDeliveryExecs();
         size = helper.getSize();
         cost = helper.getCostArray();
+        linesArray = new int[size][size];
 
         simplifyRows(cost, size, size);
 
@@ -39,13 +40,11 @@ public class LpStrategy implements IStrategy {
 
         while (optimalAssignments.size() != size) {
             optimalAssignments.clear();
-            linesArray = new int[size][size];
             for (int[] i : linesArray)
                 Arrays.fill(i, 0);
 
             drawMinimalLines(optimalAssignments);
-
-            introduceZeroes();
+            adjustCostMatrix();
         }
 
         return helper.filterDummies(optimalAssignments);
@@ -93,7 +92,7 @@ public class LpStrategy implements IStrategy {
         return count;
     }
 
-    private void introduceZeroes() {
+    private void adjustCostMatrix() {
         double min = Integer.MAX_VALUE;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -120,7 +119,6 @@ public class LpStrategy implements IStrategy {
         for (int i = 0; i < size; i++) {
             if (linesArray[i][colId] == 0 && cost[i][colId] == 0) {
                 count++;
-
                 row.setValue(i);
             }
         }
