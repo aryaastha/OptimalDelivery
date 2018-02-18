@@ -96,26 +96,7 @@ public class LpStrategy implements IStrategy {
                 }
             }
 
-
-            double min = Integer.MAX_VALUE;
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (isTraversed[i][j] == 0 && min > cost[i][j]) {
-                        min = cost[i][j];
-                    }
-                }
-            }
-
-
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (isTraversed[i][j] > 1) {
-                        cost[i][j] += min;
-                    } else if (isTraversed[i][j] == 0) {
-                        cost[i][j] -= min;
-                    }
-                }
-            }
+            introduceZeroes(cost, isTraversed, size);
         }
 
         return helper.filterDummies(optimalAssignments);
@@ -160,6 +141,28 @@ public class LpStrategy implements IStrategy {
         }
 
         return count;
+    }
+
+    public static void introduceZeroes(double[][] cost, int[][] isTraversed, Integer size){
+        double min = Integer.MAX_VALUE;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (isTraversed[i][j] == 0 && min > cost[i][j]) {
+                    min = cost[i][j];
+                }
+            }
+        }
+
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (isTraversed[i][j] > 1) {
+                    cost[i][j] += min;
+                } else if (isTraversed[i][j] == 0) {
+                    cost[i][j] -= min;
+                }
+            }
+        }
     }
 
     public static int countZerosInColumn(double[][] cost, int rows, int colId, MutableInt row, int[][] isTraversed) {

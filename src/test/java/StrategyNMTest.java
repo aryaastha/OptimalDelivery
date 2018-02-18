@@ -27,7 +27,6 @@ public class StrategyNMTest extends StrategyTest{
         orders.add(new Order(new Restaurant(new Location(2D, 4D)), 7D));
         orders.add(new Order(new Restaurant(new Location(1D, 4D)), 6D));
         orders.add(new Order(new Restaurant(new Location(4D, 1D)), 8D));
-        orders.add(new Order(new Restaurant(new Location(1D, 2D)), 8D));
 
 
         ArrayList<DeliveryExec> executives = new ArrayList<DeliveryExec>();
