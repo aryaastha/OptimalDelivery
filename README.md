@@ -1,4 +1,4 @@
-# SwiggyDelivery
+# OptimalDelivery
 
 ## For both Dp and Lp Strategy
 If numOrders != numDE
